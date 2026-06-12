@@ -1,0 +1,169 @@
+/* ==========================================================================
+   CONTACT PAGE STYLE (Clean & Elegant Minimalist)
+   ========================================================================== */
+
+.kontak-section {
+    padding: 40px 20px 80px;
+    background-color: #f8fafc; /* Latar belakang abu-abu sangat soft */
+    min-height: 80vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.kontak-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Header Halaman */
+.kontak-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 25px;
+}
+
+/* Aksen Titik Merah Khas Majalah Berita */
+.kontak-header h2::before {
+    content: "• ";
+    color: #e74c3c; /* Aksen merah serasi dengan home */
+    font-size: 28px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+.kontak-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 10px 0;
+}
+
+.kontak-header p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Wrapper Layout Dua Kolom */
+.kontak-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr; /* Kiri info agak ramping, kanan form lebih lebar */
+    gap: 50px;
+    align-items: flex-start;
+}
+
+/* SISI KIRI: KOTAK INFORMASI */
+.kontak-info-area {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.info-box {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 6px;
+    border-left: 4px solid #e74c3c; /* Garis aksen merah vertikal */
+}
+
+.info-box h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.info-box p {
+    margin: 0 0 6px 0;
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.5;
+}
+.info-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* SISI KANAN: ELEGAN FORMULIR */
+.kontak-form-area {
+    background: #ffffff;
+}
+
+.elegan-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: #334155;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Efek Fokus Input Elegan */
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* Tombol Kirim */
+.btn-kirim {
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: none;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    align-self: flex-start; /* Tombol menyesuaikan lebar teksnya sendiri */
+}
+
+.btn-kirim:hover {
+    background-color: #c0392b;
+}
+
+.btn-kirim:active {
+    transform: scale(0.98);
+}
+
+/* RESPONSIVE LAYOUT (FOR TABLET & MOBILE) */
+@media (max-width: 850px) {
+    .kontak-wrapper {
+        grid-template-columns: 1fr; /* Berubah jadi 1 kolom bertumpuk ke bawah */
+        gap: 40px;
+    }
+    .kontak-container {
+        padding: 20px;
+    }
+    .btn-kirim {
+        width: 100%; /* Tombol melebar penuh di HP */
+        text-align: center;
+    }
+}

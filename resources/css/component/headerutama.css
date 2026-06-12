@@ -1,0 +1,144 @@
+/* Reset & Header Base */
+.header-utama {
+    /* background-image SUDAH dipanggil via inline style di Blade, jangan tulis lagi di sini */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 20px 40px;
+    font-family: Arial, sans-serif;
+}
+/* Container Utama */
+.header-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    width: 100%; /* Menggunakan lebar penuh layar */
+    margin: 0;   /* Menghapus auto-center */
+}
+
+/* Logo */
+.logo h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    
+}
+
+.logo h1 a {
+    color: white;
+    text-decoration: none; /* Sesuai gambar yang teks logonya bergaris bawah */
+}
+
+/* Gabungan Navigasi & Search di Sebelah Kanan */
+.nav-and-search {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Jarak antara kumpulan menu dengan kotak search */
+}
+
+/* Menu Navigasi */
+.nav-menu {
+    display: flex;
+    gap: 20px; /* Jarak antar link menu */
+}
+
+.nav-menu a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-menu a:hover {
+    text-decoration: underline;
+}
+
+/* Kotak Pencarian (Search Box) */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1); /* Efek transparan abu-abu hitam */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 6px 12px;
+    width: 250px;
+}
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+}
+
+.search-box input::placeholder {
+    color: #aaa;
+}
+
+.search-box button {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.search-box button:hover {
+    color: white;
+}
+
+/* ==========================================================================
+   Media Query untuk Tablet & HP (Layar di bawah 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* 1. Ubah container agar susunannya menumpuk ke bawah */
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    /* 2. Buat menu navigasi dan search bar menumpuk vertikal */
+    .nav-and-search {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    /* 3. Atur jarak menu agar lebih mudah diklik di HP */
+    .nav-menu {
+        flex-wrap: wrap; /* Biar kalau menunya banyak, otomatis turun ke baris baru */
+        justify-content: center;
+        gap: 15px;
+    }
+
+    /* 4. Buat search box melebar penuh atau menyesuaikan layar HP */
+    .search-box {
+        width: 100%;
+        max-width: 350px; /* Biar gak terlalu panjang di tablet */
+        box-sizing: border-box; /* Memastikan padding tidak merusak lebar */
+    }
+}
+
+/* ==========================================================================
+   Media Query Khusus HP Kecil (Layar di bawah 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+    .header-utama {
+        padding: 15px 20px; /* Memperkecil padding luar agar space lebih luas */
+    }
+
+    .logo h1 {
+        font-size: 20px; /* Mengecilkan ukuran logo sedikit */
+    }
+
+    .nav-menu a {
+        font-size: 13px; /* Mengecilkan ukuran font menu */
+    }
+}

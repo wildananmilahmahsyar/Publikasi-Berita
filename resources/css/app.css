@@ -1,0 +1,10 @@
+@import './component/headerutama.css';
+@import './component/footerutama.css';
+@import './pages/home.css';
+@import './cssadmin/dashboard.css';
+@import './pages/laporan.css';
+@import './pages/kontak.css';
+@import './pages/profil.css';
+@import './pages/kegiatan.css';
+@import './pages/isiberita.css';
+@import './cssadmin/login.css';

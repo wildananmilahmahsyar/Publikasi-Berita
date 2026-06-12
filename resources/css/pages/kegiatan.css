@@ -1,0 +1,239 @@
+/* ==========================================================================
+   KEGIATAN PAGE STYLE (Grid Archive Layout)
+   ========================================================================== */
+
+.kegiatan-section {
+    padding: 40px 20px 80px;
+    background-color: #f8fafc;
+    min-height: 80vh;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.kegiatan-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Header */
+.kegiatan-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 25px;
+}
+
+.kegiatan-header h2::before {
+    content: "• ";
+    color: #e74c3c;
+    font-size: 28px;
+    vertical-align: middle;
+}
+
+.kegiatan-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 10px 0;
+}
+
+.kegiatan-header p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+}
+
+.sub-title {
+    font-size: 18px;
+    color: #1e293b;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+}
+
+/* 1. UPCOMING EVENTS */
+.upcoming-events-section {
+    margin-bottom: 40px;
+    background: #fff5f5;
+    padding: 20px;
+    border-radius: 6px;
+    border-left: 4px solid #e74c3c;
+}
+
+.upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.upcoming-card {
+    display: flex;
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #fee2e2;
+}
+
+.event-date {
+    background: #e74c3c;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    line-height: 1.2;
+    margin-right: 15px;
+    min-width: 45px;
+}
+
+.event-date span {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.event-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 14.5px;
+    color: #1e293b;
+}
+
+.event-details p {
+    margin: 0;
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* 2. FILTER BUTTONS */
+.filter-kegiatan {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.filter-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #475569;
+    transition: all 0.2s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #e74c3c;
+    color: #ffffff;
+    border-color: #e74c3c;
+}
+
+/* 3. LIST KEGIATAN GRID */
+.kegiatan-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
+}
+
+.kegiatan-item-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex; /* Layout menyamping */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.kegiatan-img {
+    width: 40%;
+    position: relative;
+    background: #cbd5e1;
+}
+
+.kegiatan-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.divisi-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(30, 41, 59, 0.85);
+    color: #ffffff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.kegiatan-info {
+    width: 60%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.kegiatan-date {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+.kegiatan-info h4 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.kegiatan-info h4 a {
+    color: #1e293b;
+    text-decoration: none;
+}
+
+.kegiatan-info h4 a:hover {
+    color: #e74c3c;
+}
+
+.kegiatan-info p {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+    flex-grow: 1; /* Biar tombol link-nya presisi di bawah */
+}
+
+.read-more-link {
+    font-size: 13px;
+    color: #e74c3c;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .kegiatan-item-card {
+        flex-direction: column; /* Berubah jadi numpuk atas-bawah kalau di HP */
+    }
+    .kegiatan-img, .kegiatan-info {
+        width: 100%;
+    }
+    .kegiatan-img {
+        height: 180px;
+    }
+    .kegiatan-list-grid {
+        grid-template-columns: 1fr;
+    }
+}
