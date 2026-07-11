@@ -1,0 +1,58 @@
+name: Main Sequential Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mengambil source code
+        uses: actions/checkout@v4
+
+      - name: Menyiapkan Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Menginstal dependensi Node.js
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+  testing:
+    name: Testing Laravel
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mengambil source code
+        uses: actions/checkout@v4
+
+      - name: Menyiapkan PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Menginstal dependensi PHP
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Menyiapkan environment Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Menjalankan pengujian Laravel
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
+        
