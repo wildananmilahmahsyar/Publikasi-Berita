@@ -5,9 +5,9 @@ on:
     branches:
       - "fitur/**"
       - develop
-  pull_request:
-    branches:
-      - develop
+
+permissions:
+  contents: read
 
 jobs:
   build-and-test:
@@ -50,3 +50,255 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
         run: php artisan test
+
+  integrate-feature:
+    name: Integrasi Otomatis ke Develop
+    needs: build-and-test
+
+    if: >
+      github.event_name == 'push' &&
+      startsWith(github.ref, 'refs/heads/fitur/') &&
+      startsWith(github.event.head_commit.message, 'release(')
+
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: integrasi-feature-ke-develop
+      cancel-in-progress: false
+      queue: max
+
+    steps:
+      - name: Memvalidasi Release ID
+        id: release-meta
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          COMMIT_SUBJECT="$(printf '%s\n' "$COMMIT_MESSAGE" | head -n 1)"
+
+          echo "Pesan commit: $COMMIT_SUBJECT"
+
+          if [[ "$COMMIT_SUBJECT" =~ ^release\(([^)]+)\):[[:space:]]+.+$ ]]; then
+            RELEASE_ID="${BASH_REMATCH[1]}"
+          else
+            echo "Format pesan commit tidak sesuai."
+            echo "Gunakan format:"
+            echo "release(KODE): deskripsi perubahan"
+            exit 1
+          fi
+
+          echo "Release ID: $RELEASE_ID"
+          echo "release_id=$RELEASE_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Membuat atau menemukan pull request
+        id: pull-request
+        env:
+          GH_TOKEN: ${{ secrets.REPO_AUTOMATION_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          HEAD_BRANCH: ${{ github.ref_name }}
+          RELEASE_ID: ${{ steps.release-meta.outputs.release_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          PR_NUMBER="$(gh pr list \
+            --repo "$GH_REPO" \
+            --head "$HEAD_BRANCH" \
+            --base develop \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')"
+
+          if [ -z "$PR_NUMBER" ]; then
+            gh pr create \
+              --repo "$GH_REPO" \
+              --head "$HEAD_BRANCH" \
+              --base develop \
+              --title "Integrasi otomatis $RELEASE_ID: $HEAD_BRANCH ke develop" \
+              --body "Pull request dibuat otomatis setelah build dan testing pada branch $HEAD_BRANCH berhasil untuk release $RELEASE_ID."
+
+            PR_NUMBER="$(gh pr list \
+              --repo "$GH_REPO" \
+              --head "$HEAD_BRANCH" \
+              --base develop \
+              --state open \
+              --json number \
+              --jq '.[0].number // empty')"
+          fi
+
+          if [ -z "$PR_NUMBER" ]; then
+            echo "Nomor pull request tidak berhasil ditemukan."
+            exit 1
+          fi
+
+          echo "Pull request yang digunakan: #$PR_NUMBER"
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Menggabungkan pull request ke develop
+        env:
+          GH_TOKEN: ${{ secrets.REPO_AUTOMATION_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.pull-request.outputs.pr_number }}
+          HEAD_COMMIT: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          gh pr merge "$PR_NUMBER" \
+            --repo "$GH_REPO" \
+            --auto \
+            --merge \
+            --match-head-commit "$HEAD_COMMIT"
+
+  release-develop:
+    name: Release Otomatis ke Main
+    needs: build-and-test
+
+    if: >
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/develop'
+
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: release-develop-ke-main
+      cancel-in-progress: false
+      queue: max
+
+    steps:
+      - name: Mengambil repository dan riwayat branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Memeriksa kelengkapan paket tiga akun
+        id: release-check
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git fetch --prune origin \
+            "+refs/heads/*:refs/remotes/origin/*"
+
+          BRANCHES=(
+            "fitur/berita"
+            "fitur/admin"
+            "fitur/sekertaris"
+          )
+
+          RELEASE_ID=""
+
+          for BRANCH in "${BRANCHES[@]}"; do
+            BRANCH_SHA="$(git rev-parse "origin/$BRANCH")"
+            COMMIT_SUBJECT="$(git log -1 --pretty=%s "$BRANCH_SHA")"
+
+            echo "----------------------------------------"
+            echo "Memeriksa branch: $BRANCH"
+            echo "Commit terbaru: $BRANCH_SHA"
+            echo "Pesan commit: $COMMIT_SUBJECT"
+
+            if ! git merge-base --is-ancestor "$BRANCH_SHA" "$GITHUB_SHA"; then
+              echo "$BRANCH belum terintegrasi ke develop."
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            if [[ "$COMMIT_SUBJECT" =~ ^release\(([^)]+)\):[[:space:]]+.+$ ]]; then
+              CURRENT_RELEASE_ID="${BASH_REMATCH[1]}"
+            else
+              echo "Commit terbaru $BRANCH belum memakai format:"
+              echo "release(KODE): deskripsi perubahan"
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            echo "Release ID $BRANCH: $CURRENT_RELEASE_ID"
+
+            if [ -z "$RELEASE_ID" ]; then
+              RELEASE_ID="$CURRENT_RELEASE_ID"
+            elif [ "$CURRENT_RELEASE_ID" != "$RELEASE_ID" ]; then
+              echo "Release ID ketiga branch belum sama."
+              echo "$BRANCH menggunakan $CURRENT_RELEASE_ID."
+              echo "Release yang sedang ditunggu adalah $RELEASE_ID."
+              echo "ready=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+
+          if git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
+            echo "Commit develop ini sudah terdapat di main."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "----------------------------------------"
+          echo "Ketiga branch sudah lengkap."
+          echo "Release yang siap dipromosikan: $RELEASE_ID"
+          echo "Commit develop: $GITHUB_SHA"
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+          echo "release_id=$RELEASE_ID" >> "$GITHUB_OUTPUT"
+          echo "develop_commit=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Membuat atau menemukan pull request develop ke main
+        if: steps.release-check.outputs.ready == 'true'
+        id: release-pr
+        env:
+          GH_TOKEN: ${{ secrets.REPO_AUTOMATION_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_ID: ${{ steps.release-check.outputs.release_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          PR_NUMBER="$(gh pr list \
+            --repo "$GH_REPO" \
+            --head develop \
+            --base main \
+            --state open \
+            --json number \
+            --jq '.[0].number // empty')"
+
+          if [ -z "$PR_NUMBER" ]; then
+            gh pr create \
+              --repo "$GH_REPO" \
+              --head develop \
+              --base main \
+              --title "Release otomatis $RELEASE_ID: develop ke main" \
+              --body "Release dibuat otomatis setelah perubahan dari fitur/berita, fitur/admin, dan fitur/sekertaris telah terintegrasi serta build dan testing develop berhasil."
+
+            PR_NUMBER="$(gh pr list \
+              --repo "$GH_REPO" \
+              --head develop \
+              --base main \
+              --state open \
+              --json number \
+              --jq '.[0].number // empty')"
+          fi
+
+          if [ -z "$PR_NUMBER" ]; then
+            echo "Pull request develop ke main tidak ditemukan."
+            exit 1
+          fi
+
+          echo "Pull request release yang digunakan: #$PR_NUMBER"
+          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+
+      - name: Menggabungkan develop ke main
+        if: steps.release-check.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REPO_AUTOMATION_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.release-pr.outputs.pr_number }}
+          DEVELOP_COMMIT: ${{ steps.release-check.outputs.develop_commit }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          gh pr merge "$PR_NUMBER" \
+            --repo "$GH_REPO" \
+            --auto \
+            --merge \
+            --match-head-commit "$DEVELOP_COMMIT"
