@@ -149,7 +149,6 @@ jobs:
 
           gh pr merge "$PR_NUMBER" \
             --repo "$GH_REPO" \
-            --auto \
             --merge \
             --match-head-commit "$HEAD_COMMIT"
 
@@ -301,6 +300,5 @@ jobs:
 
           gh pr merge "$PR_NUMBER" \
             --repo "$GH_REPO" \
-            --auto \
             --merge \
             --match-head-commit "$DEVELOP_COMMIT"
