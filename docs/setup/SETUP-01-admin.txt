@@ -1,0 +1,3 @@
+﻿Release ID: SETUP-01
+Branch: fitur/admin
+Tujuan: Validasi integrasi otomatis akun admin menuju develop.
