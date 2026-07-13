@@ -1,0 +1,3 @@
+﻿Release ID: SETUP-01
+Branch: fitur/sekertaris
+Tujuan: Validasi integrasi otomatis akun sekretaris menuju develop.
