@@ -1,0 +1,9 @@
+[SETUP-01]
+Akun: admin
+Tujuan: validasi integrasi otomatis akun admin ke develop.
+Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-02]
+Akun: admin
+Tujuan: validasi Railway Healthcheck Path /up setelah pipeline CI berhasil.
+Status: validasi persiapan, bukan data eksperimen resmi.
