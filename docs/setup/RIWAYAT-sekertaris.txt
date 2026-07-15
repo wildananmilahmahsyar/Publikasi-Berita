@@ -12,3 +12,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: sekretaris
 Tujuan: validasi mekanisme fault injection dalam kondisi nonaktif dan konfigurasi Railway berbasis repository.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-04]
+Akun: sekretaris
+Tujuan: mendukung validasi kegagalan Build Frontend pada pipeline main.
+Status: validasi persiapan, bukan data eksperimen resmi.
