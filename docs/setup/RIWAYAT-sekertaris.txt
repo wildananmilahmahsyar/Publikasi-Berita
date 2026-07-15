@@ -22,3 +22,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: sekretaris
 Tujuan: mendukung validasi pemulihan pipeline setelah kegagalan Build Frontend.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-06]
+Akun: sekretaris
+Tujuan: mendukung validasi kegagalan Testing Laravel pada pipeline main.
+Status: validasi persiapan, bukan data eksperimen resmi.
