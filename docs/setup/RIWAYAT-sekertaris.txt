@@ -17,3 +17,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: sekretaris
 Tujuan: mendukung validasi kegagalan Build Frontend pada pipeline main.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-05]
+Akun: sekretaris
+Tujuan: mendukung validasi pemulihan pipeline setelah kegagalan Build Frontend.
+Status: validasi persiapan, bukan data eksperimen resmi.
