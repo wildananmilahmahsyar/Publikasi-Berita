@@ -22,3 +22,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: berita
 Tujuan: memvalidasi pemulihan pipeline setelah kegagalan Build Frontend.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-06]
+Akun: berita
+Tujuan: mengaktifkan validasi kegagalan Testing Laravel pada pipeline main.
+Status: validasi persiapan, bukan data eksperimen resmi.
