@@ -147,10 +147,94 @@ jobs:
         run: |
           set -euo pipefail
 
-          gh pr merge "$PR_NUMBER" \
-            --repo "$GH_REPO" \
-            --merge \
-            --match-head-commit "$HEAD_COMMIT"
+          MAX_ATTEMPTS=5
+          DELAY_SECONDS=10
+
+          for ATTEMPT in $(seq 1 "$MAX_ATTEMPTS"); do
+            echo "Percobaan merge fitur ke develop: $ATTEMPT/$MAX_ATTEMPTS"
+
+            PR_STATE="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json state \
+                --jq '.state'
+            )"
+
+            if [[ "$PR_STATE" == "MERGED" ]]; then
+              echo "Pull request sudah berhasil digabungkan."
+              exit 0
+            fi
+
+            if [[ "$PR_STATE" != "OPEN" ]]; then
+              echo "::error::Pull request tidak lagi terbuka. Status: $PR_STATE"
+              exit 1
+            fi
+
+            CURRENT_HEAD="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json headRefOid \
+                --jq '.headRefOid'
+            )"
+
+            if [[ "$CURRENT_HEAD" != "$HEAD_COMMIT" ]]; then
+              echo "::error::Commit feature branch berubah selama proses merge."
+              echo "::error::Expected: $HEAD_COMMIT"
+              echo "::error::Current:  $CURRENT_HEAD"
+              exit 1
+            fi
+
+            if gh pr merge "$PR_NUMBER" \
+              --repo "$GH_REPO" \
+              --merge \
+              --match-head-commit "$HEAD_COMMIT"; then
+              echo "Merge fitur ke develop berhasil."
+              exit 0
+            fi
+
+            PR_STATE="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json state \
+                --jq '.state'
+            )"
+
+            if [[ "$PR_STATE" == "MERGED" ]]; then
+              echo "Pull request telah digabungkan oleh proses lain."
+              exit 0
+            fi
+
+            MERGEABLE="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json mergeable \
+                --jq '.mergeable'
+            )"
+
+            MERGE_STATUS="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json mergeStateStatus \
+                --jq '.mergeStateStatus'
+            )"
+
+            echo "::warning::Merge belum berhasil."
+            echo "Mergeable: $MERGEABLE"
+            echo "Merge status: $MERGE_STATUS"
+
+            if [[ "$MERGEABLE" == "CONFLICTING" || "$MERGE_STATUS" == "DIRTY" ]]; then
+              echo "::error::Terdapat konflik kode yang harus diselesaikan."
+              exit 1
+            fi
+
+            if [[ "$ATTEMPT" -eq "$MAX_ATTEMPTS" ]]; then
+              echo "::error::Merge gagal setelah $MAX_ATTEMPTS percobaan."
+              exit 1
+            fi
+
+            echo "Menunggu $DELAY_SECONDS detik sebelum mencoba kembali..."
+            sleep "$DELAY_SECONDS"
+          done
 
   release-develop:
     name: Release Otomatis ke Main
@@ -298,7 +382,91 @@ jobs:
         run: |
           set -euo pipefail
 
-          gh pr merge "$PR_NUMBER" \
-            --repo "$GH_REPO" \
-            --merge \
-            --match-head-commit "$DEVELOP_COMMIT"
+          MAX_ATTEMPTS=5
+          DELAY_SECONDS=10
+
+          for ATTEMPT in $(seq 1 "$MAX_ATTEMPTS"); do
+            echo "Percobaan merge develop ke main: $ATTEMPT/$MAX_ATTEMPTS"
+
+            PR_STATE="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json state \
+                --jq '.state'
+            )"
+
+            if [[ "$PR_STATE" == "MERGED" ]]; then
+              echo "Pull request develop ke main sudah berhasil digabungkan."
+              exit 0
+            fi
+
+            if [[ "$PR_STATE" != "OPEN" ]]; then
+              echo "::error::Pull request tidak lagi terbuka. Status: $PR_STATE"
+              exit 1
+            fi
+
+            CURRENT_HEAD="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json headRefOid \
+                --jq '.headRefOid'
+            )"
+
+            if [[ "$CURRENT_HEAD" != "$DEVELOP_COMMIT" ]]; then
+              echo "::error::Branch develop berubah setelah pemeriksaan release."
+              echo "::error::Expected: $DEVELOP_COMMIT"
+              echo "::error::Current:  $CURRENT_HEAD"
+              exit 1
+            fi
+
+            if gh pr merge "$PR_NUMBER" \
+              --repo "$GH_REPO" \
+              --merge \
+              --match-head-commit "$DEVELOP_COMMIT"; then
+              echo "Merge develop ke main berhasil."
+              exit 0
+            fi
+
+            PR_STATE="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json state \
+                --jq '.state'
+            )"
+
+            if [[ "$PR_STATE" == "MERGED" ]]; then
+              echo "Pull request telah digabungkan oleh proses lain."
+              exit 0
+            fi
+
+            MERGEABLE="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json mergeable \
+                --jq '.mergeable'
+            )"
+
+            MERGE_STATUS="$(
+              gh pr view "$PR_NUMBER" \
+                --repo "$GH_REPO" \
+                --json mergeStateStatus \
+                --jq '.mergeStateStatus'
+            )"
+
+            echo "::warning::Merge belum berhasil."
+            echo "Mergeable: $MERGEABLE"
+            echo "Merge status: $MERGE_STATUS"
+
+            if [[ "$MERGEABLE" == "CONFLICTING" || "$MERGE_STATUS" == "DIRTY" ]]; then
+              echo "::error::Terdapat konflik kode yang harus diselesaikan."
+              exit 1
+            fi
+
+            if [[ "$ATTEMPT" -eq "$MAX_ATTEMPTS" ]]; then
+              echo "::error::Merge gagal setelah $MAX_ATTEMPTS percobaan."
+              exit 1
+            fi
+
+            echo "Menunggu $DELAY_SECONDS detik sebelum mencoba kembali..."
+            sleep "$DELAY_SECONDS"
+          done
