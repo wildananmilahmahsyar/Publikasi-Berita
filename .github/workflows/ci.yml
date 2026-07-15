@@ -144,7 +144,7 @@ jobs:
           PR_NUMBER: ${{ steps.pull-request.outputs.pr_number }}
           HEAD_COMMIT: ${{ github.sha }}
         shell: bash
-                run: |
+        run: |
           set -euo pipefail
 
           MAX_ATTEMPTS=5
