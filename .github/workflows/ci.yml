@@ -379,7 +379,7 @@ jobs:
           PR_NUMBER: ${{ steps.release-pr.outputs.pr_number }}
           DEVELOP_COMMIT: ${{ steps.release-check.outputs.develop_commit }}
         shell: bash
-                run: |
+        run: |
           set -euo pipefail
 
           MAX_ATTEMPTS=5
