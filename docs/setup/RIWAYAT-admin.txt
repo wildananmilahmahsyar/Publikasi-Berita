@@ -27,3 +27,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: admin
 Tujuan: mendukung validasi kegagalan Testing Laravel pada pipeline main.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-07]
+Akun: admin
+Tujuan: mendukung validasi pemulihan pipeline setelah kegagalan Testing Laravel.
+Status: validasi persiapan, bukan data eksperimen resmi.
