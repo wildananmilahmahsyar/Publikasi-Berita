@@ -7,3 +7,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: admin
 Tujuan: validasi Railway Healthcheck Path /up setelah pipeline CI berhasil.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-03]
+Akun: admin
+Tujuan: validasi mekanisme fault injection dalam kondisi nonaktif dan konfigurasi Railway berbasis repository.
+Status: validasi persiapan, bukan data eksperimen resmi.
