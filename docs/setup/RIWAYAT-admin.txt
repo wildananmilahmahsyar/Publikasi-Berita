@@ -47,3 +47,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: admin
 Tujuan: mendukung validasi kegagalan deployment pada Railway setelah CI main berhasil.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-11]
+Akun: admin
+Tujuan: mendukung validasi pemulihan Railway setelah kegagalan deployment terkontrol.
+Status: validasi persiapan, bukan data eksperimen resmi.

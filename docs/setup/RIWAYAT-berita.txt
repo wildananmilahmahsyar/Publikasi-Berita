@@ -46,3 +46,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: berita
 Tujuan: mengaktifkan validasi kegagalan deployment pada Railway setelah CI main berhasil.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-11]
+Akun: berita
+Tujuan: memvalidasi pemulihan Railway setelah kegagalan deployment terkontrol.
+Status: validasi persiapan, bukan data eksperimen resmi.
