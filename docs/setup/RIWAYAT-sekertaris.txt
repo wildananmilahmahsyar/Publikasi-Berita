@@ -42,3 +42,8 @@ Status: validasi persiapan, bukan data eksperimen resmi.
 Akun: sekretaris
 Tujuan: validasi push tiga akun hampir bersamaan dan mekanisme retry merge otomatis.
 Status: validasi persiapan, bukan data eksperimen resmi.
+
+[SETUP-10]
+Akun: sekretaris
+Tujuan: mendukung validasi kegagalan deployment pada Railway setelah CI main berhasil.
+Status: validasi persiapan, bukan data eksperimen resmi.
