@@ -17,7 +17,26 @@
             📁 Upload Berkas PDF
         </button>
     </div>
+    <div class="archive-search">
+        <label for="archiveSearch">Cari Arsip</label>
 
+        <div class="archive-search-control">
+            <input
+                type="search"
+                id="archiveSearch"
+                placeholder="Cari nomor, nama, kategori, tanggal, atau nama file..."
+                autocomplete="off"
+            >
+
+            <button type="button" id="clearArchiveSearch">
+                Reset
+            </button>
+        </div>
+
+        <p class="archive-search-info" id="archiveSearchInfo">
+            Ketik kata kunci untuk memfilter data arsip.
+        </p>
+    </div>
     <div class="table-responsive">
         <table class="admin-dashboard-table">
             <thead>
@@ -30,8 +49,9 @@
                     <th style="text-align: center; width: 100px;">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+
+            <tbody id="archiveTableBody">
+                <tr class="archive-row">
                     <td><code>012/PROP/ORG/2026</code></td>
                     <td class="user-actor" style="font-weight: 600;">Proposal Kegiatan Jurnalistik Tahunan</td>
                     <td>Proposal Kegiatan</td>
@@ -46,7 +66,7 @@
                     </td>
                 </tr>
 
-                <tr>
+                <tr class="archive-row">
                     <td><code>045/SM/Humas/VI/2026</code></td>
                     <td class="user-actor" style="font-weight: 600;">Surat Undangan Studi Banding Eksternal</td>
                     <td>Surat Masuk</td>
@@ -58,6 +78,11 @@
                     </td>
                     <td style="text-align: center;">
                         <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red); border-radius: 6px; font-weight: 600;">🗑️ Hapus</a>
+                    </td>
+                </tr>
+                <tr id="archiveNoResult" class="archive-no-result" hidden>
+                    <td colspan="6">
+                        Tidak ada arsip yang sesuai dengan kata kunci pencarian.
                     </td>
                 </tr>
             </tbody>
@@ -122,11 +147,59 @@
         document.getElementById('uploadArsipModal').classList.remove('open');
     }
 
-    window.onclick = function(event) {
-        let modal = document.getElementById('uploadArsipModal');
-        if (event.target == modal) {
-            closeUploadArsipModal();
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('archiveSearch');
+        const clearButton = document.getElementById('clearArchiveSearch');
+        const archiveRows = document.querySelectorAll('.archive-row');
+        const noResultRow = document.getElementById('archiveNoResult');
+        const searchInfo = document.getElementById('archiveSearchInfo');
+
+        function filterArchives() {
+            const keyword = searchInput.value.trim().toLowerCase();
+            let visibleCount = 0;
+
+            archiveRows.forEach(function (row) {
+                const rowText = row.textContent.toLowerCase();
+                const isMatch = rowText.includes(keyword);
+
+                row.hidden = !isMatch;
+
+                if (isMatch) {
+                    visibleCount++;
+                }
+            });
+
+            noResultRow.hidden = visibleCount !== 0;
+
+            if (keyword === '') {
+                searchInfo.textContent =
+                    `Menampilkan seluruh ${archiveRows.length} data arsip.`;
+            } else if (visibleCount === 0) {
+                searchInfo.textContent =
+                    `Tidak ditemukan arsip dengan kata kunci "${searchInput.value.trim()}".`;
+            } else {
+                searchInfo.textContent =
+                    `Ditemukan ${visibleCount} arsip yang sesuai.`;
+            }
         }
-    }
+
+        searchInput.addEventListener('input', filterArchives);
+
+        clearButton.addEventListener('click', function () {
+            searchInput.value = '';
+            filterArchives();
+            searchInput.focus();
+        });
+
+        window.addEventListener('click', function (event) {
+            const modal = document.getElementById('uploadArsipModal');
+
+            if (event.target === modal) {
+                closeUploadArsipModal();
+            }
+        });
+
+        filterArchives();
+    });
 </script>
 @endsection
