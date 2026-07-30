@@ -720,3 +720,87 @@
     outline: 3px solid rgba(255, 255, 255, 0.35);
     outline-offset: 2px;
 }
+
+/*BAGIAN FILE ARSIP UNTUK CSS PENCARIAN NYA
+/* ==========================================================================
+   HALAMAN ARSIP: PENCARIAN FRONTEND
+   ========================================================================== */
+.archive-search {
+    margin-bottom: 24px;
+    padding: 18px 20px;
+    background-color: #f8f9fc;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+}
+
+.archive-search > label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.archive-search-control {
+    display: flex;
+    gap: 10px;
+}
+
+.archive-search-control input {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 14px;
+    border: 1.5px solid #dcdfe6;
+    border-radius: 8px;
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.archive-search-control input:focus {
+    outline: none;
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+}
+
+.archive-search-control button {
+    min-width: 90px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e4e7eb;
+    color: #4b5563;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.archive-search-control button:hover {
+    background-color: #d8dbdf;
+}
+
+.archive-search-info {
+    margin: 10px 0 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.archive-no-result td {
+    padding: 28px 15px;
+    color: var(--text-muted);
+    text-align: center;
+    font-style: italic;
+}
+
+@media (max-width: 600px) {
+    .archive-search-control {
+        flex-direction: column;
+    }
+
+    .archive-search-control button {
+        width: 100%;
+    }
+}
