@@ -17,5 +17,15 @@
 
     @include('component.footerutama')
 
+    <button
+        type="button"
+        id="backToTop"
+        class="back-to-top"
+        aria-label="Kembali ke bagian atas halaman"
+        title="Kembali ke atas"
+    >
+        ↑
+    </button>
+
 </body>
 </html>
