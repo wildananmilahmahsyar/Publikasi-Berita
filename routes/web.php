@@ -69,6 +69,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     // KHUSUS ADMIN WEB
     Route::middleware('role:admin_web')->group(function () {
+
+        Route::get('/berita', function () {
+            return view('pages.admin.kelola_berita');
+        });
+
         Route::get('/berita/create', function () {
             return view('pages.admin.create_berita');
         });
