@@ -18,23 +18,43 @@
         </button>
     </div>
     <div class="archive-search">
-        <label for="archiveSearch">Cari Arsip</label>
+        <div class="archive-filter-grid">
 
-        <div class="archive-search-control">
-            <input
-                type="search"
-                id="archiveSearch"
-                placeholder="Cari nomor, nama, kategori, tanggal, atau nama file..."
-                autocomplete="off"
-            >
+            <div class="archive-filter-group">
+                <label for="archiveSearch">Cari Arsip</label>
 
-            <button type="button" id="clearArchiveSearch">
-                Reset
-            </button>
+                <div class="archive-search-control">
+                    <input
+                        type="search"
+                        id="archiveSearch"
+                        placeholder="Cari nomor, nama, kategori, tanggal, atau nama file..."
+                        autocomplete="off"
+                    >
+
+                    <button type="button" id="clearArchiveSearch">
+                        Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="archive-filter-group">
+                <label for="archiveCategoryFilter">Filter Kategori</label>
+
+                <select id="archiveCategoryFilter">
+                    <option value="all">Semua Kategori</option>
+                    <option value="Proposal Kegiatan">Proposal Kegiatan</option>
+                    <option value="Surat Masuk">Surat Masuk</option>
+                    <option value="Surat Keluar">Surat Keluar</option>
+                    <option value="Laporan Pertanggungjawaban (LPJ)">
+                        Laporan Pertanggungjawaban (LPJ)
+                    </option>
+                </select>
+            </div>
+
         </div>
 
         <p class="archive-search-info" id="archiveSearchInfo">
-            Ketik kata kunci untuk memfilter data arsip.
+            Menampilkan seluruh data arsip.
         </p>
     </div>
     <div class="table-responsive">
@@ -51,7 +71,7 @@
             </thead>
 
             <tbody id="archiveTableBody">
-                <tr class="archive-row">
+                <tr class="archive-row" data-category="Proposal Kegiatan">
                     <td><code>012/PROP/ORG/2026</code></td>
                     <td class="user-actor" style="font-weight: 600;">Proposal Kegiatan Jurnalistik Tahunan</td>
                     <td>Proposal Kegiatan</td>
@@ -66,7 +86,7 @@
                     </td>
                 </tr>
 
-                <tr class="archive-row">
+                <tr class="archive-row" data-category="Surat Masuk">
                     <td><code>045/SM/Humas/VI/2026</code></td>
                     <td class="user-actor" style="font-weight: 600;">Surat Undangan Studi Banding Eksternal</td>
                     <td>Surat Masuk</td>
@@ -149,6 +169,7 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('archiveSearch');
+        const categoryFilter = document.getElementById('archiveCategoryFilter');
         const clearButton = document.getElementById('clearArchiveSearch');
         const archiveRows = document.querySelectorAll('.archive-row');
         const noResultRow = document.getElementById('archiveNoResult');
@@ -156,11 +177,20 @@
 
         function filterArchives() {
             const keyword = searchInput.value.trim().toLowerCase();
+            const selectedCategory = categoryFilter.value;
             let visibleCount = 0;
 
             archiveRows.forEach(function (row) {
                 const rowText = row.textContent.toLowerCase();
-                const isMatch = rowText.includes(keyword);
+                const rowCategory = row.dataset.category || '';
+
+                const matchesKeyword = rowText.includes(keyword);
+
+                const matchesCategory =
+                    selectedCategory === 'all' ||
+                    rowCategory === selectedCategory;
+
+                const isMatch = matchesKeyword && matchesCategory;
 
                 row.hidden = !isMatch;
 
@@ -171,22 +201,32 @@
 
             noResultRow.hidden = visibleCount !== 0;
 
-            if (keyword === '') {
+            if (keyword === '' && selectedCategory === 'all') {
                 searchInfo.textContent =
                     `Menampilkan seluruh ${archiveRows.length} data arsip.`;
             } else if (visibleCount === 0) {
                 searchInfo.textContent =
-                    `Tidak ditemukan arsip dengan kata kunci "${searchInput.value.trim()}".`;
+                    'Tidak ditemukan arsip yang sesuai dengan pencarian dan filter.';
+            } else if (keyword !== '' && selectedCategory !== 'all') {
+                searchInfo.textContent =
+                    `Ditemukan ${visibleCount} arsip dengan kata kunci "${searchInput.value.trim()}" pada kategori "${selectedCategory}".`;
+            } else if (keyword !== '') {
+                searchInfo.textContent =
+                    `Ditemukan ${visibleCount} arsip yang sesuai dengan kata kunci "${searchInput.value.trim()}".`;
             } else {
                 searchInfo.textContent =
-                    `Ditemukan ${visibleCount} arsip yang sesuai.`;
+                    `Menampilkan ${visibleCount} arsip kategori "${selectedCategory}".`;
             }
         }
 
         searchInput.addEventListener('input', filterArchives);
 
+        categoryFilter.addEventListener('change', filterArchives);
+
         clearButton.addEventListener('click', function () {
             searchInput.value = '';
+            categoryFilter.value = 'all';
+
             filterArchives();
             searchInput.focus();
         });
