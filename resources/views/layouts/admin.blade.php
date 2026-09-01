@@ -18,7 +18,7 @@
                 <a href="/admin">Dashboard</a>
 
                 @if(auth()->user()->role === 'admin_web')
-                    <a href="/admin/berita/create">Kelola Berita</a>
+                    <a href="/admin/berita">Kelola Berita</a>
                     <a href="/admin/profil">Kelola Profil</a>
                     <a href="/admin/pesan">Pesan Kontak</a>
                 @endif
