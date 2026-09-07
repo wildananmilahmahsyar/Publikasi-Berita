@@ -10,9 +10,7 @@ use App\Http\Controllers\BeritaController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('pages.public.home');
-});
+Route::get('/', [BeritaController::class, 'home']);
 
 Route::get('/profil', function () {
     return view('pages.public.profil');
@@ -30,9 +28,7 @@ Route::get('/kontak', function () {
     return view('pages.public.kontak');
 });
 
-Route::get('/isiberita', function () {
-    return view('pages.public.isiberita');
-});
+Route::get('/isiberita/{berita}', [BeritaController::class, 'show']);
 
 
 /*
