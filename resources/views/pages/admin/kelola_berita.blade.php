@@ -18,6 +18,12 @@
         </a>
     </div>
 
+    @if (session('success'))
+        <div class="alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="manage-news-toolbar">
         <div class="manage-news-search">
             <label for="searchNews">Cari Berita</label>
@@ -28,7 +34,7 @@
                 disabled
             >
             <small>
-                Fitur pencarian akan tersedia setelah data berita terhubung ke sistem.
+                Fitur pencarian belum digunakan pada skenario ini.
             </small>
         </div>
     </div>
@@ -46,24 +52,54 @@
             </thead>
 
             <tbody>
-                <tr class="news-empty-row">
-                    <td colspan="5">
-                        <div class="news-empty-state">
-                            <div class="news-empty-icon">📰</div>
 
-                            <h3>Belum Ada Berita</h3>
+                @forelse ($beritas as $berita)
 
-                            <p>
-                                Data berita dan kegiatan belum tersedia pada sistem.
-                                Tambahkan berita pertama untuk memulai publikasi.
-                            </p>
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
 
-                            <a href="/admin/berita/create" class="btn-empty-add-news">
-                                + Tambah Berita
-                            </a>
-                        </div>
-                    </td>
-                </tr>
+                        <td>
+                            {{ $berita->title }}
+                        </td>
+
+                        <td>
+                            {{ $berita->category }}
+                        </td>
+
+                        <td>
+                            {{ $berita->tanggal_kegiatan->format('d-m-Y') }}
+                        </td>
+
+                        <td>
+                            <span>
+                                Tersimpan
+                            </span>
+                        </td>
+                    </tr>
+
+                @empty
+
+                    <tr class="news-empty-row">
+                        <td colspan="5">
+                            <div class="news-empty-state">
+                                <div class="news-empty-icon">📰</div>
+
+                                <h3>Belum Ada Berita</h3>
+
+                                <p>
+                                    Data berita dan kegiatan belum tersedia pada sistem.
+                                    Tambahkan berita pertama untuk memulai publikasi.
+                                </p>
+
+                                <a href="/admin/berita/create" class="btn-empty-add-news">
+                                    + Tambah Berita
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+
+                @endforelse
+
             </tbody>
         </table>
     </div>

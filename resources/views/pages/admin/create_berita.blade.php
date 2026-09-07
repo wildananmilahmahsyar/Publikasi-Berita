@@ -6,10 +6,10 @@
 <div class="form-admin-container">
     <div class="form-header">
         <h2>Tambah Berita & Kegiatan Baru</h2>
-        <p>Input data berita sekaligus perbarui statistik halaman laporan secara otomatis.</p>
+        <p>Tambahkan berita atau kegiatan baru untuk dipublikasikan pada website.</p>
     </div>
 
-    <form action="#" method="POST" enctype="multipart/form-data" class="admin-main-form">
+    <form action="/admin/berita" method="POST" enctype="multipart/form-data" class="admin-main-form">
         @csrf
         
         <div class="form-group">
@@ -70,7 +70,7 @@
 
         <div class="form-actions">
             <button type="button" class="btn-cancel" onclick="window.history.back()">Batal</button>
-            <button type="submit" class="btn-submit">Publish Berita & Update Laporan</button>
+            <button type="submit" class="btn-submit">Publish Berita</button>
         </div>
     </form>
 </div>
