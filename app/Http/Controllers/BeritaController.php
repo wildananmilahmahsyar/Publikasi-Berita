@@ -8,6 +8,28 @@ use Illuminate\Http\Request;
 class BeritaController extends Controller
 {
     /**
+     * Menampilkan maksimal 20 berita terbaru
+     * pada halaman utama pengunjung.
+     */
+    public function home()
+    {
+        $beritas = Berita::orderBy('tanggal_kegiatan', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->take(20)
+            ->get();
+
+        return view('pages.public.home', compact('beritas'));
+    }
+
+    /**
+     * Menampilkan detail satu berita kepada pengunjung.
+     */
+    public function show(Berita $berita)
+    {
+        return view('pages.public.isiberita', compact('berita'));
+    }
+
+    /**
      * Menampilkan daftar berita pada halaman admin.
      */
     public function index()
@@ -31,29 +53,17 @@ class BeritaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'             => 'required|string|max:255',
-            'category'          => 'required|string|max:100',
-            'divisi'            => 'required|string|max:255',
-            'lokasi'            => 'required|string|max:255',
-            'tanggal_kegiatan'  => 'required|date',
-            'is_proker'         => 'nullable|boolean',
-            'image'             => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            'content'           => 'required|string',
+            'title'            => 'required|string|max:255',
+            'category'         => 'required|string|max:100',
+            'divisi'           => 'required|string|max:255',
+            'lokasi'           => 'required|string|max:255',
+            'tanggal_kegiatan' => 'required|date',
+            'is_proker'        => 'nullable|boolean',
+            'image'            => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'content'          => 'required|string',
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN GAMBAR
-        |--------------------------------------------------------------------------
-        */
-
         $imagePath = $request->file('image')->store('berita', 'public');
-
-        /*
-        |--------------------------------------------------------------------------
-        | SIMPAN DATA BERITA
-        |--------------------------------------------------------------------------
-        */
 
         Berita::create([
             'title'            => $validated['title'],
