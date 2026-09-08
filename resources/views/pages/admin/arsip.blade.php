@@ -71,35 +71,55 @@
             </thead>
 
             <tbody id="archiveTableBody">
-                <tr class="archive-row" data-category="Proposal Kegiatan">
-                    <td><code>012/PROP/ORG/2026</code></td>
-                    <td class="user-actor" style="font-weight: 600;">Proposal Kegiatan Jurnalistik Tahunan</td>
-                    <td>Proposal Kegiatan</td>
-                    <td>Hari ini, 14:30</td>
-                    <td>
-                        <a href="#" style="color: var(--primary-purple); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
-                            📄 LPJ_Kegiatan.pdf
-                        </a>
-                    </td>
-                    <td style="text-align: center;">
-                        <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red); border-radius: 6px; font-weight: 600;">🗑️ Hapus</a>
-                    </td>
-                </tr>
+                <tbody id="archiveTableBody">
+                    @forelse ($arsips as $arsip)
+                        <tr class="archive-row" data-category="{{ $arsip->kategori }}">
+                            <td>
+                                <code>{{ $arsip->no_dokumen }}</code>
+                            </td>
 
-                <tr class="archive-row" data-category="Surat Masuk">
-                    <td><code>045/SM/Humas/VI/2026</code></td>
-                    <td class="user-actor" style="font-weight: 600;">Surat Undangan Studi Banding Eksternal</td>
-                    <td>Surat Masuk</td>
-                    <td>05 Jun 2026</td>
-                    <td>
-                        <a href="#" style="color: var(--primary-purple); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">
-                            📄 Undangan_Studi_Banding.pdf
-                        </a>
-                    </td>
-                    <td style="text-align: center;">
-                        <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red); border-radius: 6px; font-weight: 600;">🗑️ Hapus</a>
-                    </td>
-                </tr>
+                            <td class="user-actor" style="font-weight: 600;">
+                                {{ $arsip->nama_dokumen }}
+                            </td>
+
+                            <td>
+                                {{ $arsip->kategori }}
+                            </td>
+
+                            <td>
+                                {{ $arsip->created_at->format('d M Y') }}
+                            </td>
+
+                            <td>
+                                <a
+                                    href="{{ asset('storage/' . $arsip->file_pdf) }}"
+                                    target="_blank"
+                                    style="color: var(--primary-purple); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"
+                                >
+                                    📄 {{ basename($arsip->file_pdf) }}
+                                </a>
+                            </td>
+
+                            <td style="text-align: center;">
+                                <span style="color: #6c757d; font-size: 0.85rem;">
+                                    —
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr class="archive-empty">
+                            <td colspan="6" style="text-align: center; padding: 25px;">
+                                Belum ada arsip yang disimpan.
+                            </td>
+                        </tr>
+                    @endforelse
+
+                    <tr id="archiveNoResult" class="archive-no-result" hidden>
+                        <td colspan="6">
+                            Tidak ada arsip yang sesuai dengan kata kunci pencarian.
+                        </td>
+                    </tr>
+                </tbody>
                 <tr id="archiveNoResult" class="archive-no-result" hidden>
                     <td colspan="6">
                         Tidak ada arsip yang sesuai dengan kata kunci pencarian.
@@ -117,7 +137,7 @@
             <button type="button" class="btn-close-modal" onclick="closeUploadArsipModal()">&times;</button>
         </div>
         
-        <form action="#" method="POST" enctype="multipart/form-data" class="admin-main-form">
+        <form action="{{ url('/admin/arsip') }}" method="POST" enctype="multipart/form-data" class="admin-main-form">
             @csrf
             <div class="modal-body" style="padding: 20px 25px; gap: 16px;">
                 

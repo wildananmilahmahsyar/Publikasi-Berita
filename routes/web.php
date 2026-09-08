@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\ArsipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,9 +120,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             return view('pages.admin.pengurus');
         });
 
-        Route::get('/arsip', function () {
-            return view('pages.admin.arsip');
-        });
+        Route::get('/arsip', [ArsipController::class, 'index']);
+        Route::post('/arsip', [ArsipController::class, 'store']);
     });
 
 });
