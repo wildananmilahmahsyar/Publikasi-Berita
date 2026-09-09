@@ -3,6 +3,21 @@
 @section('title', 'Arsip Surat & Dokumen')
 
 @section('content')
+@if (session('success'))
+    <div
+        style="
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            background-color: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 8px;
+            color: #065f46;
+            font-weight: 600;
+        "
+    >
+        {{ session('success') }}
+    </div>
+@endif
 <div class="activity-log-container" style="margin-top: 0;">
     <div class="form-header" style="border-bottom: 1px solid var(--border-light); padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
         <div>
@@ -136,29 +151,68 @@
             <h3>Upload Arsip Dokumen Baru</h3>
             <button type="button" class="btn-close-modal" onclick="closeUploadArsipModal()">&times;</button>
         </div>
-        
+        @if ($errors->any())
+            <div style="margin: 0 25px 15px; padding: 12px 15px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; color: #b91c1c;">
+                <strong>Upload arsip gagal.</strong>
+
+                <ul style="margin: 8px 0 0; padding-left: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{ url('/admin/arsip') }}" method="POST" enctype="multipart/form-data" class="admin-main-form">
             @csrf
             <div class="modal-body" style="padding: 20px 25px; gap: 16px;">
                 
                 <div class="form-group">
                     <label for="no_dokumen">Nomor Surat / Kode Berkas</label>
-                    <input type="text" id="no_dokumen" name="no_dokumen" placeholder="Contoh: 012/PROP/ORG/2026" required>
+                    <input
+                        type="text"
+                        id="no_dokumen"
+                        name="no_dokumen"
+                        value="{{ old('no_dokumen') }}"
+                        placeholder="Contoh: 012/PROP/ORG/2026"
+                        required
+                    >
                 </div>
 
                 <div class="form-group">
                     <label for="nama_dokumen">Nama / Judul Dokumen</label>
-                    <input type="text" id="nama_dokumen" name="nama_dokumen" placeholder="Masukkan judul arsip dokumen..." required>
+                    <input
+                        type="text"
+                        id="nama_dokumen"
+                        name="nama_dokumen"
+                        value="{{ old('nama_dokumen') }}"
+                        placeholder="Masukkan judul arsip dokumen..."
+                        required
+                    >
                 </div>
 
                 <div class="form-group">
                     <label for="kategori">Kategori Berkas</label>
                     <select id="kategori" name="kategori" required>
                         <option value="">-- Pilih Kategori --</option>
-                        <option value="Surat Masuk">Surat Masuk</option>
-                        <option value="Surat Keluar">Surat Keluar</option>
-                        <option value="Proposal Kegiatan">Proposal Kegiatan</option>
-                        <option value="Laporan Pertanggungjawaban (LPJ)">Laporan Pertanggungjawaban (LPJ)</option>
+
+                        <option value="Surat Masuk" @selected(old('kategori') === 'Surat Masuk')>
+                            Surat Masuk
+                        </option>
+
+                        <option value="Surat Keluar" @selected(old('kategori') === 'Surat Keluar')>
+                            Surat Keluar
+                        </option>
+
+                        <option value="Proposal Kegiatan" @selected(old('kategori') === 'Proposal Kegiatan')>
+                            Proposal Kegiatan
+                        </option>
+
+                        <option
+                            value="Laporan Pertanggungjawaban (LPJ)"
+                            @selected(old('kategori') === 'Laporan Pertanggungjawaban (LPJ)')
+                        >
+                            Laporan Pertanggungjawaban (LPJ)
+                        </option>
                     </select>
                 </div>
 
@@ -262,4 +316,13 @@
         filterArchives();
     });
 </script>
+
+@if ($errors->any())
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            openUploadArsipModal();
+        });
+    </script>
+@endif
+
 @endsection

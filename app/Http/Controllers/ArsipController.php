@@ -21,8 +21,14 @@ class ArsipController extends Controller
             'nama_dokumen' => 'required|string|max:255',
             'kategori' => 'required|in:Surat Masuk,Surat Keluar,Proposal Kegiatan,Laporan Pertanggungjawaban (LPJ)',
             'file_pdf' => 'required|file|mimes:pdf|max:5120',
+        ], [
+            'no_dokumen.required' => 'Nomor surat atau kode berkas wajib diisi.',
+            'nama_dokumen.required' => 'Nama atau judul dokumen wajib diisi.',
+            'kategori.required' => 'Kategori berkas wajib dipilih.',
+            'file_pdf.required' => 'File PDF wajib dipilih.',
+            'file_pdf.mimes' => 'File yang diunggah harus berformat PDF.',
+            'file_pdf.max' => 'Ukuran file PDF maksimal 5 MB.',
         ]);
-
         $filePath = $request->file('file_pdf')->store('arsip', 'public');
 
         Arsip::create([
