@@ -25,18 +25,27 @@
     @endif
 
     <div class="manage-news-toolbar">
-        <div class="manage-news-search">
+        <form method="GET" action="/admin/berita" class="manage-news-search">
             <label for="searchNews">Cari Berita</label>
+
             <input
                 type="search"
                 id="searchNews"
-                placeholder="Cari berdasarkan judul atau kategori..."
-                disabled
+                name="q"
+                value="{{ $search ?? '' }}"
+                placeholder="Cari berdasarkan judul, kategori, atau divisi..."
             >
-            <small>
-                Fitur pencarian belum digunakan pada skenario ini.
-            </small>
-        </div>
+
+            <button type="submit">
+                Cari
+            </button>
+
+            @if (!empty($search))
+                <a href="/admin/berita">
+                    Reset
+                </a>
+            @endif
+        </form>
     </div>
 
     <div class="manage-news-table-wrapper">
@@ -84,16 +93,29 @@
                             <div class="news-empty-state">
                                 <div class="news-empty-icon">📰</div>
 
-                                <h3>Belum Ada Berita</h3>
+                                @if (!empty($search))
+                                    <h3>Berita Tidak Ditemukan</h3>
 
-                                <p>
-                                    Data berita dan kegiatan belum tersedia pada sistem.
-                                    Tambahkan berita pertama untuk memulai publikasi.
-                                </p>
+                                    <p>
+                                        Tidak ada berita yang sesuai dengan kata kunci
+                                        "{{ $search }}".
+                                    </p>
 
-                                <a href="/admin/berita/create" class="btn-empty-add-news">
-                                    + Tambah Berita
-                                </a>
+                                    <a href="/admin/berita" class="btn-empty-add-news">
+                                        Tampilkan Semua Berita
+                                    </a>
+                                @else
+                                    <h3>Belum Ada Berita</h3>
+
+                                    <p>
+                                        Data berita dan kegiatan belum tersedia pada sistem.
+                                        Tambahkan berita pertama untuk memulai publikasi.
+                                    </p>
+
+                                    <a href="/admin/berita/create" class="btn-empty-add-news">
+                                        + Tambah Berita
+                                    </a>
+                                @endif
                             </div>
                         </td>
                     </tr>
