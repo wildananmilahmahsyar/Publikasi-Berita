@@ -71,9 +71,31 @@
                         </td>
 
                         <td>
-                            <span>
-                                Tersimpan
-                            </span>
+                            <div class="news-action-buttons">
+                                <a
+                                    href="/admin/berita/{{ $berita->id }}/edit"
+                                    class="btn-news-edit"
+                                >
+                                    Edit
+                                </a>
+
+                                <form
+                                    action="/admin/berita/{{ $berita->id }}"
+                                    method="POST"
+                                    class="form-news-delete"
+                                    onsubmit="return confirm('Yakin ingin menghapus berita ini?')"
+                                >
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        class="btn-news-delete"
+                                    >
+                                        Hapus
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
 
