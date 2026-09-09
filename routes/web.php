@@ -84,6 +84,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
         Route::post('/berita', [BeritaController::class, 'store']);
 
+        Route::get('/berita/{berita}/edit', [BeritaController::class, 'edit']);
+
+        Route::put('/berita/{berita}', [BeritaController::class, 'update']);
+
+        Route::delete('/berita/{berita}', [BeritaController::class, 'destroy']);
+
 
         /*
         |--------------------------------------------------------------------------
