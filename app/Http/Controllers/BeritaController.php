@@ -32,11 +32,22 @@ class BeritaController extends Controller
     /**
      * Menampilkan daftar berita pada halaman admin.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $beritas = Berita::orderBy('created_at', 'desc')->get();
+        $search = trim((string) $request->query('q', ''));
 
-        return view('pages.admin.kelola_berita', compact('beritas'));
+        $beritas = Berita::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%")
+                        ->orWhere('divisi', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('pages.admin.kelola_berita', compact('beritas', 'search'));
     }
 
     /**
