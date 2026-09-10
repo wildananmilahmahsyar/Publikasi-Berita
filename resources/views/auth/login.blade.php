@@ -48,6 +48,9 @@
 
             <button type="submit" class="btn-login">Masuk</button>
         </form>
+        <a href="{{ url('/') }}" class="btn-back-home">
+            ← Kembali ke Halaman Pengunjung
+        </a>
     </div>
 </section>
 

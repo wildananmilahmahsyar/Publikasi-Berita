@@ -60,6 +60,27 @@
     background: #5b34a3;
 }
 
+.btn-back-home {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px;
+    box-sizing: border-box;
+    text-align: center;
+    text-decoration: none;
+    color: #6f42c1;
+    background: white;
+    border: 1px solid #6f42c1;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.btn-back-home:hover {
+    background: #f3effb;
+    color: #5b34a3;
+}
+
 .login-error {
     background: #fee2e2;
     color: #991b1b;
