@@ -13,6 +13,13 @@
     <div class="login-card">
         <h1>Login Admin</h1>
         <p>Masuk ke panel pengelolaan sistem publikasi berita.</p>
+        <div class="login-info">
+            <div class="login-info-title">Akses Admin Publikasi Berita</div>
+            <div class="login-info-text">
+                Halaman ini khusus untuk admin dan pengelola sistem publikasi berita.
+                Gunakan akun yang telah terdaftar untuk mengakses panel pengelolaan.
+            </div>
+        </div>
 
         @if ($errors->any())
             <div class="login-error">
