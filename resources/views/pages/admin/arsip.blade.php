@@ -109,7 +109,7 @@
                                 <a
                                     href="{{ asset('storage/' . $arsip->file_pdf) }}"
                                     target="_blank"
-                                    style="color: var(--primary-purple); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"
+                                    class="archive-pdf-button"
                                 >
                                     &#128196; Lihat PDF
                                 </a>
