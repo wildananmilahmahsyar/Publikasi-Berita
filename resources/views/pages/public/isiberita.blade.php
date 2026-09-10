@@ -15,7 +15,7 @@
 
         <header class="entry-header">
 
-            <span class="category-badge">
+            <span class="category-badge {{ \Illuminate\Support\Str::slug($berita->category) }}">
                 {{ strtoupper($berita->category) }}
             </span>
 
