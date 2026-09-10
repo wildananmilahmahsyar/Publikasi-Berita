@@ -30,16 +30,24 @@
                 <select id="kategori" name="category" required>
                     <option value="">-- Pilih Kategori --</option>
 
-                    <option value="latest" @selected(old('category', $berita->category) === 'latest')>
-                        LATEST NEWS
+                    <option value="Kegiatan" @selected(old('category', $berita->category) === 'Kegiatan')>
+                        KEGIATAN
                     </option>
 
-                    <option value="gadgets" @selected(old('category', $berita->category) === 'gadgets')>
-                        GADGETS
+                    <option value="Pengumuman" @selected(old('category', $berita->category) === 'Pengumuman')>
+                        PENGUMUMAN
                     </option>
 
-                    <option value="sports" @selected(old('category', $berita->category) === 'sports')>
-                        SPORTS
+                    <option value="Program Kerja" @selected(old('category', $berita->category) === 'Program Kerja')>
+                        PROGRAM KERJA
+                    </option>
+
+                    <option value="Prestasi" @selected(old('category', $berita->category) === 'Prestasi')>
+                        PRESTASI
+                    </option>
+
+                    <option value="Informasi" @selected(old('category', $berita->category) === 'Informasi')>
+                        INFORMASI
                     </option>
                 </select>
             </div>
