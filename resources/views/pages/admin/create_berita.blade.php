@@ -22,9 +22,11 @@
                 <label for="kategori">Kategori Tampilan</label>
                 <select id="kategori" name="category" required>
                     <option value="">-- Pilih Kategori --</option>
-                    <option value="latest">LATEST NEWS</option>
-                    <option value="gadgets">GADGETS</option>
-                    <option value="sports">SPORTS</option>
+                    <option value="Kegiatan">KEGIATAN</option>
+                    <option value="Pengumuman">PENGUMUMAN</option>
+                    <option value="Program Kerja">PROGRAM KERJA</option>
+                    <option value="Prestasi">PRESTASI</option>
+                    <option value="Informasi">INFORMASI</option>
                 </select>
             </div>
             
