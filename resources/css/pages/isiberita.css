@@ -55,6 +55,26 @@
     margin-bottom: 12px;
 }
 
+.category-badge.kegiatan {
+    background-color: #2563eb;
+}
+
+.category-badge.pengumuman {
+    background-color: #dc2626;
+}
+
+.category-badge.program-kerja {
+    background-color: #7c3aed;
+}
+
+.category-badge.prestasi {
+    background-color: #d97706;
+}
+
+.category-badge.informasi {
+    background-color: #059669;
+}
+
 .entry-title {
     font-size: 30px;
     font-weight: 700;
