@@ -111,7 +111,7 @@
                                     target="_blank"
                                     style="color: var(--primary-purple); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;"
                                 >
-                                    📄 {{ basename($arsip->file_pdf) }}
+                                    &#128196; Lihat PDF
                                 </a>
                             </td>
 
