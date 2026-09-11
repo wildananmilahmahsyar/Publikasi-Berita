@@ -115,6 +115,37 @@
     border-bottom: 1px solid #e5e7eb;
 }
 
+.manage-category-badge {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.manage-category-badge.kegiatan {
+    background-color: #2563eb;
+}
+
+.manage-category-badge.pengumuman {
+    background-color: #dc2626;
+}
+
+.manage-category-badge.program-kerja {
+    background-color: #7c3aed;
+}
+
+.manage-category-badge.prestasi {
+    background-color: #d97706;
+}
+
+.manage-category-badge.informasi {
+    background-color: #059669;
+}
+
 .news-empty-row td {
     padding: 0;
 }
