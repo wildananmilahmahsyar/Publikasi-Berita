@@ -32,6 +32,18 @@
             📁 Upload Berkas PDF
         </button>
     </div>
+        <div class="archive-summary-card">
+        <div class="archive-summary-icon">
+            &#128194;
+        </div>
+
+        <div class="archive-summary-content">
+            <span class="archive-summary-label">Total Arsip Tersimpan</span>
+            <strong class="archive-summary-value">
+                {{ count($arsips) }} dokumen
+            </strong>
+        </div>
+    </div>
     <div class="archive-search">
         <div class="archive-filter-grid">
 

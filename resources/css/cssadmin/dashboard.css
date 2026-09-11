@@ -726,6 +726,45 @@
 /* ==========================================================================
    HALAMAN ARSIP: PENCARIAN FRONTEND
    ========================================================================== */
+.archive-summary-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+    padding: 16px 18px;
+    background-color: #f8f7ff;
+    border: 1px solid #e4def7;
+    border-radius: 10px;
+}
+
+.archive-summary-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    background-color: var(--primary-purple);
+    color: var(--white);
+    font-size: 20px;
+}
+
+.archive-summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.archive-summary-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.archive-summary-value {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
 .archive-search {
     margin-bottom: 24px;
     padding: 18px 20px;
@@ -879,3 +918,4 @@
         width: 100%;
     }
 }
+
