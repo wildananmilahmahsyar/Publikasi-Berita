@@ -72,7 +72,9 @@
                         </td>
 
                         <td>
-                            {{ $berita->category }}
+                            <span class="manage-category-badge {{ \Illuminate\Support\Str::slug($berita->category) }}">
+                                {{ strtoupper($berita->category) }}
+                            </span>
                         </td>
 
                         <td>
