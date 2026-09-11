@@ -63,6 +63,12 @@
 
         </article>
 
+        <div class="back-home-wrapper">
+            <a href="{{ url('/') }}" class="back-home-button">
+                ← Kembali ke Beranda
+            </a>
+        </div>
+
     </div>
 </section>
 

@@ -199,3 +199,30 @@
         text-align: left;
     }
 }
+
+.back-home-wrapper {
+    margin-top: 32px;
+}
+
+.back-home-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 16px;
+    border: 1px solid #7c3aed;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #7c3aed;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.back-home-button:hover {
+    background-color: #7c3aed;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.18);
+}
