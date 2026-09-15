@@ -6,7 +6,7 @@
 
         <div class="nav-and-search">
             <nav class="nav-menu">
-                <!-- <a href="/">Home</a> -->
+                <a href="/">Home</a>
                 <a href="/profil">Profil</a>
                 <a href="/laporan">Laporan</a>
                 <a href="/kegiatan">Kegiatan</a>
