@@ -41,7 +41,11 @@
         </div>
 
         <div class="meta-box notes-box">
-            <h3>📌 Catatan / Memo Internal</h3>
+            <div class="notes-box-header">
+                <h3>📌 Catatan / Memo Internal</h3>
+                <button type="button" class="notes-edit-btn">Edit</button>
+            </div>
+
             <ul class="dashboard-notes-list">
                 <li>Mohon Sekretaris segera melengkapi arsip PDF Surat Keluar bulan ini.</li>
                 <li>Ganti bagan struktur organisasi jika masa kepengurusan baru telah disahkan.</li>

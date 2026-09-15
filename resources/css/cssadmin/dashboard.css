@@ -221,7 +221,32 @@
     color: #444444;
     line-height: 1.4;
 }
+.notes-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
 
+.notes-box-header h3 {
+    margin: 0;
+}
+
+.notes-edit-btn {
+    background-color: var(--primary-purple);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.notes-edit-btn:hover {
+    opacity: 0.9;
+}
 /* ==========================================================================
    ACTIVITY LOG TABLE STYLING
    ========================================================================== */
