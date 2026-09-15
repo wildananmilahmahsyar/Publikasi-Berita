@@ -18,6 +18,15 @@
         </button>
     </div>
 
+    <div style="margin-bottom: 20px;">
+        <input
+            type="text"
+            id="pengurusSearch"
+            placeholder="Cari NIM, nama, jabatan, atau divisi..."
+            style="width: 100%; max-width: 420px; padding: 10px 14px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 0.9rem; outline: none;"
+        >
+    </div>
+
     <div class="table-responsive">
         <table class="admin-dashboard-table">
             <thead>
@@ -30,7 +39,7 @@
                     <th style="text-align: center; width: 100px;">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="pengurusTableBody">
                 <tr>
                     <td><code>18302-2026</code></td>
                     <td style="text-align: center;">
@@ -129,6 +138,26 @@
     function closeAddPengurusModal() {
         document.getElementById('addPengurusModal').classList.remove('open');
     }
+    const pengurusSearch = document.getElementById('pengurusSearch');
+    const pengurusTableBody = document.getElementById('pengurusTableBody');
+
+    pengurusSearch.addEventListener('input', function () {
+        const keyword = this.value.toLowerCase().trim();
+        const rows = pengurusTableBody.querySelectorAll('tr');
+
+        rows.forEach(function (row) {
+            const cells = row.querySelectorAll('td');
+
+            const searchableText = [
+                cells[0]?.textContent,
+                cells[2]?.textContent,
+                cells[3]?.textContent,
+                cells[4]?.textContent
+            ].join(' ').toLowerCase();
+
+            row.style.display = searchableText.includes(keyword) ? '' : 'none';
+        });
+    });
 
     window.onclick = function(event) {
         let modal = document.getElementById('addPengurusModal');
