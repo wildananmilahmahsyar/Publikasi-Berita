@@ -1,4 +1,4 @@
-name: Main Sequential Pipeline
+name: Main Parallel Pipeline
 
 on:
   push:
@@ -52,7 +52,6 @@ jobs:
 
   testing:
     name: Testing Laravel
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
