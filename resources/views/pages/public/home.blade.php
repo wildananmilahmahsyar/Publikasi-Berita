@@ -67,6 +67,7 @@
                                 {{ $beritaUtama->divisi }}
                             </span>
                         </div>
+                        <span class="read-more-button">Baca Selengkapnya</span>
 
                     </div>
                 </a>
@@ -98,6 +99,7 @@
                                     <h3>
                                         {{ $berita->title }}
                                     </h3>
+                                    <span class="read-more-button">Baca Selengkapnya</span>
 
                                 </div>
                             </a>

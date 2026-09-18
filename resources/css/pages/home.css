@@ -118,6 +118,23 @@ body {
 .sub-card h3 { font-size: 16px; margin: 0; line-height: 1.4; }
 .card-meta { font-size: 12px; color: #ccc; display: flex; gap: 10px; }
 
+.read-more-button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 7px 12px;
+    background-color: rgba(255, 255, 255, 0.18);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: background-color 0.2s ease;
+}
+
+.news-card:hover .read-more-button {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
 /* ==========================================================================
    PART 2: LOWER LAYOUT WORKSPACE (SISI BAWAH MENGGUNAKAN GRID)
    ========================================================================== */

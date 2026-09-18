@@ -84,6 +84,13 @@
                         <td>
                             <div class="news-action-buttons">
                                 <a
+                                    href="{{ url('/isiberita/' . $berita->id) }}"
+                                    class="btn-news-detail"
+                                >
+                                    Lihat Detail
+                                </a>
+
+                                <a
                                     href="/admin/berita/{{ $berita->id }}/edit"
                                     class="btn-news-edit"
                                 >

@@ -184,6 +184,7 @@
     margin: 0;
 }
 
+.btn-news-detail,
 .btn-news-edit,
 .btn-news-delete {
     display: inline-flex;
@@ -195,6 +196,16 @@
     font-weight: 600;
     text-decoration: none;
     cursor: pointer;
+}
+
+.btn-news-detail {
+    background-color: var(--primary-purple);
+    color: #ffffff;
+    border: 1px solid var(--primary-purple);
+}
+
+.btn-news-detail:hover {
+    opacity: 0.9;
 }
 
 .btn-news-edit {
