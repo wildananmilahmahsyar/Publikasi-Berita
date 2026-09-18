@@ -18,13 +18,24 @@
         </button>
     </div>
 
-    <div style="margin-bottom: 20px;">
+    <div style="margin-bottom: 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
         <input
             type="text"
             id="pengurusSearch"
             placeholder="Cari NIM, nama, jabatan, atau divisi..."
             style="width: 100%; max-width: 420px; padding: 10px 14px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 0.9rem; outline: none;"
         >
+
+        <select
+            id="pengurusSort"
+            style="padding: 10px 14px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 0.9rem; background-color: white;"
+        >
+            <option value="">Urutkan berdasarkan...</option>
+            <option value="nama-asc">Nama A-Z</option>
+            <option value="nama-desc">Nama Z-A</option>
+            <option value="jabatan-asc">Jabatan A-Z</option>
+            <option value="jabatan-desc">Jabatan Z-A</option>
+        </select>
     </div>
 
     <div class="table-responsive">
@@ -140,6 +151,7 @@
     }
     const pengurusSearch = document.getElementById('pengurusSearch');
     const pengurusTableBody = document.getElementById('pengurusTableBody');
+    const pengurusSort = document.getElementById('pengurusSort');
 
     pengurusSearch.addEventListener('input', function () {
         const keyword = this.value.toLowerCase().trim();
@@ -156,6 +168,35 @@
             ].join(' ').toLowerCase();
 
             row.style.display = searchableText.includes(keyword) ? '' : 'none';
+        });
+    });
+
+    pengurusSort.addEventListener('change', function () {
+        const sortValue = this.value;
+
+        if (!sortValue) {
+            return;
+        }
+
+        const rows = Array.from(pengurusTableBody.querySelectorAll('tr'));
+
+        const [field, direction] = sortValue.split('-');
+
+        const columnIndex = field === 'nama' ? 2 : 3;
+
+        rows.sort(function (a, b) {
+            const aText = a.children[columnIndex].textContent.trim();
+            const bText = b.children[columnIndex].textContent.trim();
+
+            const comparison = aText.localeCompare(bText, 'id', {
+                sensitivity: 'base'
+            });
+
+            return direction === 'asc' ? comparison : -comparison;
+        });
+
+        rows.forEach(function (row) {
+            pengurusTableBody.appendChild(row);
         });
     });
 
