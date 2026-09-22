@@ -59,9 +59,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/', function () {
-        return view('pages.admin.dashboard');
-    });
+    Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index']);
 
     Route::get('/catatan', [\App\Http\Controllers\CatatanController::class, 'show'])
         ->name('admin.catatan.show');
