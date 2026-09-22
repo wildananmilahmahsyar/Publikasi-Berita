@@ -4,6 +4,22 @@
 
 @section('content')
 <div class="activity-log-container" style="margin-top: 0;">
+
+    @if (session('success'))
+        <div style="margin-bottom: 18px; padding: 12px 15px; border-radius: 8px; background: #ecfdf3; color: #166534;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div style="margin-bottom: 18px; padding: 12px 15px; border-radius: 8px; background: #fef2f2; color: #991b1b;">
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="form-header" style="border-bottom: 1px solid var(--border-light); padding-bottom: 15px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
         <div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px;">
@@ -51,35 +67,40 @@
                 </tr>
             </thead>
             <tbody id="pengurusTableBody">
-                <tr>
-                    <td><code>18302-2026</code></td>
-                    <td style="text-align: center;">
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                            <img src="{{ url('/picture/uhuy.jpg') }}" alt="Foto Andi" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-purple); background-color: #eee;">                            
-                        </div>
-                    </td>
-                    <td class="user-actor" style="font-weight: 600;">Andi Saputra</td>
-                    <td>Ketua Umum</td>
-                    <td>Direksi / Inti</td>
-                    <td style="text-align: center;">
-                        <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red); border-radius: 6px; font-weight: 600;">🗑️ Hapus</a>
-                    </td>
-                </tr>
+                @forelse ($pengurus as $item)
+                    <tr class="pengurus-data-row">
+                        <td><code>{{ $item->nim }}</code></td>
 
-                <tr>
-                    <td><code>18303-2027</code></td>
-                    <td style="text-align: center;">
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                            <img src="{{ url('/picture/uhuy.jpg') }}" alt="Foto Budi" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-purple); background-color: #eee;">
-                        </div>
-                    </td>
-                    <td class="user-actor" style="font-weight: 600;">Budi Santoso</td>
-                    <td>Humas Koordinator</td>
-                    <td>Divisi Hubungan Masyarakat (Humas)</td>
-                    <td style="text-align: center;">
-                        <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red); border-radius: 6px; font-weight: 600;">🗑️ Hapus</a>
-                    </td>
-                </tr>
+                        <td style="text-align: center;">
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                                <img
+                                    src="{{ asset('storage/' . $item->foto_pengurus) }}"
+                                    alt="Foto {{ $item->nama }}"
+                                    style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-purple); background-color: #eee;"
+                                >
+                            </div>
+                        </td>
+
+                        <td class="user-actor" style="font-weight: 600;">
+                            {{ $item->nama }}
+                        </td>
+
+                        <td>{{ $item->jabatan }}</td>
+                        <td>{{ $item->divisi }}</td>
+
+                        <td style="text-align: center;">
+                            <span style="font-size: 0.8rem; color: #6b7280;">
+                                Tersimpan
+                            </span>
+                        </td>
+                    </tr>
+                @empty
+                    <tr id="pengurusEmptyRow">
+                        <td colspan="6" style="text-align: center;">
+                            Belum ada data pengurus.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -92,7 +113,7 @@
             <button type="button" class="btn-close-modal" onclick="closeAddPengurusModal()">&times;</button>
         </div>
         
-        <form action="#" method="POST" enctype="multipart/form-data" class="admin-main-form">
+        <form action="{{ route('admin.pengurus.store') }}" method="POST" enctype="multipart/form-data" class="admin-main-form">
             @csrf
             <div class="modal-body" style="padding: 20px 25px; gap: 16px;">
                 
@@ -155,7 +176,7 @@
 
     pengurusSearch.addEventListener('input', function () {
         const keyword = this.value.toLowerCase().trim();
-        const rows = pengurusTableBody.querySelectorAll('tr');
+        const rows = pengurusTableBody.querySelectorAll('.pengurus-data-row');
 
         rows.forEach(function (row) {
             const cells = row.querySelectorAll('td');
@@ -178,7 +199,7 @@
             return;
         }
 
-        const rows = Array.from(pengurusTableBody.querySelectorAll('tr'));
+        const rows = Array.from(pengurusTableBody.querySelectorAll('.pengurus-data-row'));
 
         const [field, direction] = sortValue.split('-');
 
@@ -208,3 +229,4 @@
     }
 </script>
 @endsection
+
