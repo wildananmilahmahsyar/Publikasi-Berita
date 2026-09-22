@@ -61,6 +61,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index']);
 
+    Route::get('/catatan', [\App\Http\Controllers\CatatanController::class, 'show'])
+        ->name('admin.catatan.show');
+
+    Route::put('/catatan', [\App\Http\Controllers\CatatanController::class, 'update'])
+        ->name('admin.catatan.update');
+
 
     /*
     |--------------------------------------------------------------------------
