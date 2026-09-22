@@ -68,24 +68,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Hari ini, 22:15</td>
-                        <td class="user-actor">Admin Web (Direksi)</td>
-                        <td>Mempublikasikan Berita: <em>"Sesi Berbagi Ilmu: Pengenalan Jurnalistik"</em></td>
-                        <td><span class="badge status-success">Success</span></td>
-                    </tr>
-                    <tr>
-                        <td>Kemarin, 14:30</td>
-                        <td class="user-actor">Sekretaris</td>
-                        <td>Mengunggah berkas: <code>LPJ_Kegiatan_Tahunan.pdf</code></td>
-                        <td><span class="badge status-archive">Archived</span></td>
-                    </tr>
-                    <tr>
-                        <td>05 Jun 2026, 09:12</td>
-                        <td class="user-actor">Admin Web (Direksi)</td>
-                        <td>Mengubah data Visi & Misi pada Halaman Profil</td>
-                        <td><span class="badge status-update">Updated</span></td>
-                    </tr>
+                    @forelse ($activities as $activity)
+                        <tr>
+                            <td>{{ $activity['activity_at']->format('d M Y, H:i') }}</td>
+                            <td class="user-actor">{{ $activity['actor'] }}</td>
+                            <td>{{ $activity['description'] }}</td>
+                            <td>
+                                <span class="badge {{ $activity['status_class'] }}">
+                                    {{ $activity['status'] }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4">Belum ada aktivitas sistem.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
