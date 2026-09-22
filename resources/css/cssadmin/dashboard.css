@@ -944,3 +944,30 @@
     }
 }
 
+
+#notes-editor {
+    margin-top: 12px;
+}
+
+#notes-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font: inherit;
+}
+
+.notes-editor-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.notes-editor-actions button {
+    cursor: pointer;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}

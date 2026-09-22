@@ -59,9 +59,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/', function () {
-        return view('pages.admin.dashboard');
-    });
+    Route::get('/', [\App\Http\Controllers\DashboardController::class, 'index']);
+
+    Route::get('/catatan', [\App\Http\Controllers\CatatanController::class, 'show'])
+        ->name('admin.catatan.show');
+
+    Route::put('/catatan', [\App\Http\Controllers\CatatanController::class, 'update'])
+        ->name('admin.catatan.update');
 
 
     /*
@@ -122,9 +126,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
     Route::middleware('role:sekretaris')->group(function () {
 
-        Route::get('/pengurus', function () {
-            return view('pages.admin.pengurus');
-        });
+        Route::get('/pengurus', [\App\Http\Controllers\PengurusController::class, 'index'])
+            ->name('admin.pengurus.index');
+
+        Route::post('/pengurus', [\App\Http\Controllers\PengurusController::class, 'store'])
+            ->name('admin.pengurus.store');
 
         Route::get('/arsip', [ArsipController::class, 'index']);
         Route::post('/arsip', [ArsipController::class, 'store']);
