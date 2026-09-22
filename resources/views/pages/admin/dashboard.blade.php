@@ -43,14 +43,26 @@
         <div class="meta-box notes-box">
             <div class="notes-box-header">
                 <h3>📌 Catatan / Memo Internal</h3>
-                <button type="button" class="notes-edit-btn">Edit</button>
+                <button type="button" class="notes-edit-btn" id="edit-notes-btn">Edit</button>
             </div>
 
-            <ul class="dashboard-notes-list">
+            <ul class="dashboard-notes-list" id="dashboard-notes-list">
                 <li>Mohon Sekretaris segera melengkapi arsip PDF Surat Keluar bulan ini.</li>
                 <li>Ganti bagan struktur organisasi jika masa kepengurusan baru telah disahkan.</li>
                 <li>Periksa menu Pesan Kontak secara berkala untuk merespon pertanyaan publik.</li>
             </ul>
+            <div id="notes-editor" style="display: none;">
+                <textarea
+                    id="notes-textarea"
+                    rows="6"
+                    placeholder="Satu catatan per baris"
+                ></textarea>
+
+                <div class="notes-editor-actions">
+                    <button type="button" id="save-notes-btn">Simpan</button>
+                    <button type="button" id="cancel-notes-btn">Batal</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -93,4 +105,119 @@
 
 </section>
 
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const list = document.getElementById('dashboard-notes-list');
+    const editor = document.getElementById('notes-editor');
+    const textarea = document.getElementById('notes-textarea');
+    const editBtn = document.getElementById('edit-notes-btn');
+    const saveBtn = document.getElementById('save-notes-btn');
+    const cancelBtn = document.getElementById('cancel-notes-btn');
+
+    let currentNotes = [];
+
+    const renderNotes = (notes) => {
+        list.innerHTML = '';
+
+        if (!notes.length) {
+            const li = document.createElement('li');
+            li.textContent = 'Belum ada catatan internal.';
+            list.appendChild(li);
+            return;
+        }
+
+        notes.forEach(note => {
+            const li = document.createElement('li');
+            li.textContent = note.content;
+            list.appendChild(li);
+        });
+    };
+
+    const loadNotes = async () => {
+        try {
+            const response = await fetch('{{ route('admin.catatan.show') }}', {
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Gagal memuat catatan.');
+            }
+
+            const data = await response.json();
+            currentNotes = data.catatans ?? [];
+            renderNotes(currentNotes);
+        } catch (error) {
+            list.innerHTML = '<li>Catatan gagal dimuat.</li>';
+            console.error(error);
+        }
+    };
+
+    editBtn.addEventListener('click', () => {
+        textarea.value = currentNotes
+            .map(note => note.content)
+            .join('\n');
+
+        list.style.display = 'none';
+        editor.style.display = 'block';
+        editBtn.style.display = 'none';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        editor.style.display = 'none';
+        list.style.display = '';
+        editBtn.style.display = '';
+    });
+
+    saveBtn.addEventListener('click', async () => {
+        const catatans = textarea.value
+            .split('\n')
+            .map(note => note.trim())
+            .filter(note => note.length > 0);
+
+        if (!catatans.length) {
+            alert('Isi minimal satu catatan.');
+            return;
+        }
+
+        saveBtn.disabled = true;
+
+        try {
+            const response = await fetch('{{ route('admin.catatan.update') }}', {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ catatans })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message ?? 'Gagal menyimpan catatan.');
+            }
+
+            currentNotes = data.catatans ?? [];
+            renderNotes(currentNotes);
+
+            editor.style.display = 'none';
+            list.style.display = '';
+            editBtn.style.display = '';
+        } catch (error) {
+            alert(error.message);
+            console.error(error);
+        } finally {
+            saveBtn.disabled = false;
+        }
+    });
+
+    loadNotes();
+});
+</script>
+
 @endsection
+
