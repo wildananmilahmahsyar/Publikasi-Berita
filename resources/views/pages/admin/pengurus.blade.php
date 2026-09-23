@@ -30,7 +30,7 @@
         </div>
         
         <button type="button" class="btn-submit" onclick="openAddPengurusModal()" style="display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(111, 66, 193, 0.2);">
-            ➕ Tambah Pengurus Baru
+            âž• Tambah Pengurus Baru
         </button>
     </div>
 
@@ -89,9 +89,34 @@
                         <td>{{ $item->divisi }}</td>
 
                         <td style="text-align: center;">
-                            <span style="font-size: 0.8rem; color: #6b7280;">
-                                Tersimpan
-                            </span>
+                            <div style="display: flex; justify-content: center; gap: 6px; flex-wrap: wrap;">
+
+                                <button
+                                    type="button"
+                                    class="btn-submit"
+                                    style="padding: 6px 10px; font-size: 0.8rem;"
+                                    onclick="openEditPengurusModal({{ $item->id }})">
+                                    Edit
+                                </button>
+
+                                <form
+                                    action="{{ route('admin.pengurus.destroy', $item) }}"
+                                    method="POST"
+                                    style="display: inline;"
+                                    onsubmit="return confirm('Yakin ingin menghapus data pengurus ini?');">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        style="padding: 6px 10px; font-size: 0.8rem; border: none; border-radius: 6px; background: #dc2626; color: white; cursor: pointer;">
+                                        Hapus
+                                    </button>
+
+                                </form>
+
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -162,7 +187,184 @@
     </div>
 </div>
 
+@foreach ($pengurus as $item)
+<div class="modal-overlay" id="editPengurusModal{{ $item->id }}">
+    <div class="modal-container" style="max-width: 600px;">
+
+        <div class="modal-header">
+            <h3>Edit Data Pengurus</h3>
+
+            <button
+                type="button"
+                class="btn-close-modal"
+                onclick="closeEditPengurusModal({{ $item->id }})">
+                &times;
+            </button>
+        </div>
+
+        <form
+            action="{{ route('admin.pengurus.update', $item) }}"
+            method="POST"
+            enctype="multipart/form-data"
+            class="admin-main-form">
+
+            @csrf
+            @method('PUT')
+
+            <div class="modal-body" style="padding: 20px 25px; gap: 16px;">
+
+                <div class="form-group">
+                    <label for="edit_nama_{{ $item->id }}">
+                        Nama Lengkap Pengurus
+                    </label>
+
+                    <input
+                        type="text"
+                        id="edit_nama_{{ $item->id }}"
+                        name="nama"
+                        value="{{ $item->nama }}"
+                        required>
+                </div>
+
+                <div class="form-row-two">
+
+                    <div class="form-group">
+                        <label for="edit_nim_{{ $item->id }}">
+                            NIM / ID Anggota
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit_nim_{{ $item->id }}"
+                            name="nim"
+                            value="{{ $item->nim }}"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_jabatan_{{ $item->id }}">
+                            Jabatan Struktural
+                        </label>
+
+                        <input
+                            type="text"
+                            id="edit_jabatan_{{ $item->id }}"
+                            name="jabatan"
+                            value="{{ $item->jabatan }}"
+                            required>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="edit_divisi_{{ $item->id }}">
+                        Divisi Organisasi
+                    </label>
+
+                    <select
+                        id="edit_divisi_{{ $item->id }}"
+                        name="divisi"
+                        required>
+
+                        <option value="Direksi / Inti"
+                            @selected($item->divisi === 'Direksi / Inti')>
+                            Direksi / Inti
+                        </option>
+
+                        <option value="Divisi Hubungan Masyarakat (Humas)"
+                            @selected($item->divisi === 'Divisi Hubungan Masyarakat (Humas)')>
+                            Divisi Hubungan Masyarakat (Humas)
+                        </option>
+
+                        <option value="Divisi Internal & Kaderisasi"
+                            @selected($item->divisi === 'Divisi Internal & Kaderisasi')>
+                            Divisi Internal & Kaderisasi
+                        </option>
+
+                        <option value="Divisi Minat, Bakat & Olahraga"
+                            @selected($item->divisi === 'Divisi Minat, Bakat & Olahraga')>
+                            Divisi Minat, Bakat & Olahraga
+                        </option>
+
+                        <option value="Divisi Dana & Usaha (Danus)"
+                            @selected($item->divisi === 'Divisi Dana & Usaha (Danus)')>
+                            Divisi Dana & Usaha (Danus)
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Foto Saat Ini
+                    </label>
+
+                    <div style="margin-bottom: 10px;">
+                        <img
+                            src="{{ asset('storage/' . $item->foto_pengurus) }}"
+                            alt="Foto {{ $item->nama }}"
+                            style="width: 70px; height: 70px; border-radius: 50%; object-fit: cover;">
+                    </div>
+
+                    <label for="edit_foto_{{ $item->id }}">
+                        Ganti Foto Pengurus
+                    </label>
+
+                    <input
+                        type="file"
+                        id="edit_foto_{{ $item->id }}"
+                        name="foto_pengurus"
+                        accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+
+                    <small class="form-help">
+                        Kosongkan jika foto tidak ingin diganti. Maksimal 2 MB.
+                    </small>
+                </div>
+
+            </div>
+
+            <div class="modal-footer"
+                 style="background-color: #f8f9fa; border-top: 1px solid var(--border-light);">
+
+                <button
+                    type="button"
+                    class="btn-cancel"
+                    style="padding: 10px 20px;"
+                    onclick="closeEditPengurusModal({{ $item->id }})">
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn-submit"
+                    style="padding: 10px 24px;">
+                    Simpan Perubahan
+                </button>
+
+            </div>
+
+        </form>
+    </div>
+</div>
+@endforeach
+
 <script>
+    function openEditPengurusModal(id) {
+        const modal = document.getElementById('editPengurusModal' + id);
+
+        if (modal) {
+            modal.classList.add('open');
+        }
+    }
+
+    function closeEditPengurusModal(id) {
+        const modal = document.getElementById('editPengurusModal' + id);
+
+        if (modal) {
+            modal.classList.remove('open');
+        }
+    }
+
     function openAddPengurusModal() {
         document.getElementById('addPengurusModal').classList.add('open');
     }
