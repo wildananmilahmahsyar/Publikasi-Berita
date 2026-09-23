@@ -39,26 +39,43 @@
             </div>
 
             <div class="kontak-form-area">
-                <form action="#" method="POST" class="elegan-form">
+                @if (session('success'))
+                    <div style="margin-bottom: 20px; padding: 12px 15px; border-radius: 8px; background: #e8f5e9; color: #256029;">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div style="margin-bottom: 20px; padding: 12px 15px; border-radius: 8px; background: #ffebee; color: #b71c1c;">
+                        <strong>Pesan belum dapat dikirim.</strong>
+                        <ul style="margin: 8px 0 0 18px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('kontak.store') }}" method="POST" class="elegan-form">
                     @csrf
                     <div class="form-group">
                         <label for="nama">Nama Lengkap</label>
-                        <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required>
+                        <input type="text" id="nama" name="nama" value="{{ old('nama') }}" placeholder="Masukkan nama Anda" required>
                     </div>
 
                     <div class="form-group">
                         <label for="email">Alamat Email</label>
-                        <input type="email" id="email" name="email" placeholder="nama@email.com" required>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="nama@email.com" required>
                     </div>
 
                     <div class="form-group">
                         <label for="subjek">Subjek / Perihal</label>
-                        <input type="text" id="subjek" name="subjek" placeholder="Contoh: Kemitraan, Saran Konten" required>
+                        <input type="text" id="subjek" name="subjek" value="{{ old('subjek') }}" placeholder="Contoh: Kemitraan, Saran Konten" required>
                     </div>
 
                     <div class="form-group">
                         <label for="pesan">Pesan Anda</label>
-                        <textarea id="pesan" name="pesan" rows="5" placeholder="Tuliskan pesan atau detail informasi kegiatan di sini..." required></textarea>
+                        <textarea id="pesan" name="pesan" rows="5" placeholder="Tuliskan pesan atau detail informasi kegiatan di sini..." required>{{ old('pesan') }}</textarea>
                     </div>
 
                     <button type="submit" class="btn-kirim">Kirim Pesan</button>
