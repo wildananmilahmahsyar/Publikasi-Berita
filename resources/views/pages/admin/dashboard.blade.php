@@ -27,7 +27,7 @@
 
         <div class="admin-card">
             <h3>Arsip Internal</h3>
-            <p><strong>12</strong> Dokumen PDF</p>
+            <p><strong>{{ $arsipCount }}</strong> Dokumen PDF</p>
             <small>Jumlah surat dan proposal yang diarsip Sekretaris.</small>
         </div>
     </div>
@@ -218,4 +218,5 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 @endsection
+
 

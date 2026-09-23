@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProfilController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaController;
@@ -13,9 +15,7 @@ use App\Http\Controllers\ArsipController;
 
 Route::get('/', [BeritaController::class, 'home']);
 
-Route::get('/profil', function () {
-    return view('pages.public.profil');
-});
+Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
 
 Route::get('/kegiatan', function () {
     return view('pages.public.kegiatan');
@@ -101,9 +101,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/profil', function () {
-            return view('pages.admin.edit_profil');
-        });
+        Route::get('/profil', [ProfilController::class, 'edit'])->name('admin.profil.edit');
+        Route::put('/profil', [ProfilController::class, 'update'])->name('admin.profil.update');
 
 
         /*
@@ -131,6 +130,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
         Route::post('/pengurus', [\App\Http\Controllers\PengurusController::class, 'store'])
             ->name('admin.pengurus.store');
+
+        Route::put('/pengurus/{pengurus}', [\App\Http\Controllers\PengurusController::class, 'update'])
+            ->name('admin.pengurus.update');
+
+        Route::delete('/pengurus/{pengurus}', [\App\Http\Controllers\PengurusController::class, 'destroy'])
+            ->name('admin.pengurus.destroy');
 
         Route::get('/arsip', [ArsipController::class, 'index']);
         Route::post('/arsip', [ArsipController::class, 'store']);
