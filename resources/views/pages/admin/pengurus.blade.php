@@ -103,7 +103,7 @@
                                     action="{{ route('admin.pengurus.destroy', $item) }}"
                                     method="POST"
                                     style="display: inline;"
-                                    onsubmit="return confirm('Yakin ingin menghapus data pengurus ini?');">
+                                    id="deletePengurusForm{{ $item->id }}" onsubmit="event.preventDefault(); openDeletePengurusModal({{ $item->id }}); return false;">
 
                                     @csrf
                                     @method('DELETE')
@@ -348,6 +348,134 @@
 </div>
 @endforeach
 
+<div class="modal-overlay" id="deletePengurusModal">
+    <div class="modal-container" style="max-width: 430px;">
+
+        <div class="modal-header">
+            <h3>Konfirmasi Hapus Pengurus</h3>
+
+            <button
+                type="button"
+                class="btn-close-modal"
+                onclick="closeDeletePengurusModal()">
+                &times;
+            </button>
+        </div>
+
+        <div class="modal-body" style="padding: 28px 25px; text-align: center;">
+
+            <div style="
+                width: 64px;
+                height: 64px;
+                margin: 0 auto 18px;
+                border-radius: 50%;
+                background: #fee2e2;
+                color: #dc2626;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 30px;
+                font-weight: 700;">
+                !
+            </div>
+
+            <h3 style="margin-bottom: 10px; color: #1f2937;">
+                Hapus Data Pengurus?
+            </h3>
+
+            <p style="
+                margin: 0;
+                color: #6b7280;
+                font-size: 0.95rem;
+                line-height: 1.6;">
+                Data pengurus yang dihapus tidak dapat dikembalikan.
+                Pastikan data yang dipilih sudah benar.
+            </p>
+
+        </div>
+
+        <div class="modal-footer"
+             style="
+                background-color: #f8f9fa;
+                border-top: 1px solid var(--border-light);
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;">
+
+            <button
+                type="button"
+                class="btn-cancel"
+                style="padding: 9px 18px;"
+                onclick="closeDeletePengurusModal()">
+                Batal
+            </button>
+
+            <button
+                type="button"
+                style="
+                    padding: 9px 18px;
+                    border: none;
+                    border-radius: 6px;
+                    background: #dc2626;
+                    color: white;
+                    font-weight: 600;
+                    cursor: pointer;"
+                onclick="confirmDeletePengurus()">
+                Ya, Hapus
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let deletePengurusId = null;
+
+    function openDeletePengurusModal(id) {
+        deletePengurusId = id;
+
+        const modal = document.getElementById('deletePengurusModal');
+
+        if (modal) {
+            modal.classList.add('open');
+        }
+    }
+
+    function closeDeletePengurusModal() {
+        const modal = document.getElementById('deletePengurusModal');
+
+        if (modal) {
+            modal.classList.remove('open');
+        }
+
+        deletePengurusId = null;
+    }
+
+    function confirmDeletePengurus() {
+        if (!deletePengurusId) {
+            return;
+        }
+
+        const form = document.getElementById(
+            'deletePengurusForm' + deletePengurusId
+        );
+
+        if (form) {
+            form.submit();
+        }
+    }
+
+    const customDeleteModal =
+        document.getElementById('deletePengurusModal');
+
+    if (customDeleteModal) {
+        customDeleteModal.addEventListener('click', function(event) {
+            if (event.target === customDeleteModal) {
+                closeDeletePengurusModal();
+            }
+        });
+    }
+</script>
 <script>
     function openEditPengurusModal(id) {
         const modal = document.getElementById('editPengurusModal' + id);
