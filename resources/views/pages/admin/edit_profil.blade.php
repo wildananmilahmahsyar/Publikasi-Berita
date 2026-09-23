@@ -8,6 +8,10 @@
     <div class="form-header">
         <h2>Kelola Informasi Profil Publik</h2>
         <p>Sesuaikan seluruh konten halaman profil publik, termasuk sejarah, visi-misi, bagan struktur, dan nilai organisasi.</p>
+        <p style="margin-top: 6px; font-size: 0.9rem; color: var(--text-muted);">
+            Terakhir diperbarui:
+            <strong>{{ $profil->updated_at?->timezone('Asia/Makassar')->format('d/m/Y H:i') ?? '-' }} WITA</strong>
+        </p>
     </div>
 
     @if (session('success'))
