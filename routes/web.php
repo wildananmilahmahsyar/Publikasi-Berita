@@ -27,7 +27,10 @@ Route::get('/laporan', function () {
 
 Route::get('/kontak', function () {
     return view('pages.public.kontak');
-});
+})->name('kontak');
+
+Route::post('/kontak', [\App\Http\Controllers\PesanKontakController::class, 'store'])
+    ->name('kontak.store');
 
 Route::get('/isiberita/{berita}', [BeritaController::class, 'show']);
 
