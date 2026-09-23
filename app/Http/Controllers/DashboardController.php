@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $arsipCount = Arsip::count();
         $beritaActivities = Berita::query()
             ->orderByDesc('updated_at')
             ->limit(10)
@@ -51,7 +52,9 @@ class DashboardController extends Controller
             ->take(5)
             ->values();
 
-        return view('pages.admin.dashboard', compact('activities'));
+        return view('pages.admin.dashboard', compact('activities', 'arsipCount'));
     }
 }
+
+
 
