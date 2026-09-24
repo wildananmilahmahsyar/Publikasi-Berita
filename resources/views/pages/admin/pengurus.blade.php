@@ -30,7 +30,7 @@
         </div>
         
         <button type="button" class="btn-submit" onclick="openAddPengurusModal()" style="display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(111, 66, 193, 0.2);">
-            âž• Tambah Pengurus Baru
+            Tambah Pengurus Baru
         </button>
     </div>
 

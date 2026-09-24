@@ -21,36 +21,60 @@
                     <th style="text-align: center;">Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>Hari ini, 10:15</td>
-                    <td class="user-actor">Andi Wijaya</td>
-                    <td><code style="font-size: 0.9rem;">andi.wijaya@gmail.com</code></td>
-                    <td><strong>Pertanyaan Kerja Sama Kegiatan</strong></td>
-                    <td><span class="badge" style="background-color: #ffeef0; color: var(--danger-red);">Unread</span></td>
-                    <td style="text-align: center;">
-                        <button type="button" class="btn-submit" style="padding: 6px 12px; font-size: 0.85rem;" 
-                                onclick="openMessageModal('Andi Wijaya', 'andi.wijaya@gmail.com', 'Pertanyaan Kerja Sama Kegiatan', 'Halo Admin,\n\nKami dari komunitas Jurnalis Muda Parepare berniat untuk mengajak kolaborasi dalam menyelenggarakan workshop penulisan berita pada akhir bulan ini.\n\nApakah ada nomor WhatsApp divisi Humas yang bisa kami hubungi untuk diskusi proposal lebih lanjut? Terima kasih!')">
-                            Baca
-                        </button>
-                        <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red);">Hapus</a>
-                    </td>
-                </tr>
+                        <tbody>
+                @forelse ($pesanKontaks as $pesanKontak)
+                    <tr>
+                        <td>
+                            {{ $pesanKontak->created_at?->timezone('Asia/Makassar')->format('d M Y, H:i') ?? '-' }}
+                        </td>
 
-                <tr>
-                    <td>05 Jun 2026, 14:30</td>
-                    <td class="user-actor">Siti Rahma</td>
-                    <td><code style="font-size: 0.9rem;">siti.rahma@yahoo.com</code></td>
-                    <td>Saran Mengenai Tampilan Website Publik</td>
-                    <td><span class="badge status-success">Read</span></td>
-                    <td style="text-align: center;">
-                        <button type="button" class="btn-submit" style="padding: 6px 12px; font-size: 0.85rem; background-color: #6c757d;"
-                                onclick="openMessageModal('Siti Rahma', 'siti.rahma@yahoo.com', 'Saran Mengenai Tampilan Website Publik', 'Saran saja min, bagian bagan struktur organisasi di halaman profil kalau bisa dikasih fitur zoom atau klik perbesar, soalnya tulisan nama pengurusnya agak kecil kalau dilihat lewat layar smartphone. Sukses terus!')">
-                            Detail
-                        </button>
-                        <a href="#" class="btn-cancel" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none; background-color: #ffeef0; color: var(--danger-red);">Hapus</a>
-                    </td>
-                </tr>
+                        <td class="user-actor">
+                            {{ $pesanKontak->nama }}
+                        </td>
+
+                        <td>
+                            <code style="font-size: 0.9rem;">
+                                {{ $pesanKontak->email }}
+                            </code>
+                        </td>
+
+                        <td>
+                            <strong>{{ $pesanKontak->subjek }}</strong>
+                        </td>
+
+                        <td>
+                            <span class="badge" style="background-color: #eef2ff; color: #4f46e5;">
+                                Masuk
+                            </span>
+                        </td>
+
+                        <td style="text-align: center;">
+                            <button
+                                type="button"
+                                class="btn-submit"
+                                style="padding: 6px 12px; font-size: 0.85rem;"
+                                data-name="{{ $pesanKontak->nama }}"
+                                data-email="{{ $pesanKontak->email }}"
+                                data-subject="{{ $pesanKontak->subjek }}"
+                                data-text="{{ $pesanKontak->pesan }}"
+                                onclick="openMessageModal(
+                                    this.dataset.name,
+                                    this.dataset.email,
+                                    this.dataset.subject,
+                                    this.dataset.text
+                                )">
+                                Lihat Pesan
+                            </button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6"
+                            style="text-align: center; padding: 25px; color: var(--text-muted);">
+                            Belum ada pesan kontak masuk.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
