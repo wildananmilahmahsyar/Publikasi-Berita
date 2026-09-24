@@ -17,9 +17,8 @@ Route::get('/', [BeritaController::class, 'home']);
 
 Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
 
-Route::get('/kegiatan', function () {
-    return view('pages.public.kegiatan');
-});
+Route::get('/kegiatan', [BeritaController::class, 'kegiatan'])
+    ->name('kegiatan');
 
 Route::get('/laporan', function () {
     return view('pages.public.laporan');
