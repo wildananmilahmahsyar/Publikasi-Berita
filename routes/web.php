@@ -17,9 +17,8 @@ Route::get('/', [BeritaController::class, 'home']);
 
 Route::get('/profil', [ProfilController::class, 'show'])->name('profil');
 
-Route::get('/kegiatan', function () {
-    return view('pages.public.kegiatan');
-});
+Route::get('/kegiatan', [BeritaController::class, 'kegiatan'])
+    ->name('kegiatan');
 
 Route::get('/laporan', function () {
     return view('pages.public.laporan');
@@ -116,6 +115,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
         Route::get('/pesan', [\App\Http\Controllers\PesanKontakController::class, 'index'])
             ->name('admin.pesan.index');
+
+        Route::delete('/pesan/{pesanKontak}', [\App\Http\Controllers\PesanKontakController::class, 'destroy'])
+            ->name('admin.pesan.destroy');
     });
 
 
@@ -141,6 +143,15 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
         Route::get('/arsip', [ArsipController::class, 'index']);
         Route::post('/arsip', [ArsipController::class, 'store']);
+
+        Route::get('/agenda', [\App\Http\Controllers\AgendaController::class, 'index'])
+            ->name('admin.agenda.index');
+
+        Route::post('/agenda', [\App\Http\Controllers\AgendaController::class, 'store'])
+            ->name('admin.agenda.store');
+
+        Route::delete('/agenda/{agenda}', [\App\Http\Controllers\AgendaController::class, 'destroy'])
+            ->name('admin.agenda.destroy');
     });
 
 });

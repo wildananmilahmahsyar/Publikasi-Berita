@@ -65,6 +65,22 @@
                                 )">
                                 Lihat Pesan
                             </button>
+
+                            <form
+                                action="{{ route('admin.pesan.destroy', $pesanKontak) }}"
+                                method="POST"
+                                style="display: inline-block; margin-left: 5px;"
+                                onsubmit="return confirm('Yakin ingin menghapus pesan dari {{ $pesanKontak->nama }}?')">
+                                @csrf
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="btn-cancel"
+                                    style="padding: 6px 12px; font-size: 0.85rem; background-color: #ffeef0; color: var(--danger-red); border: none; cursor: pointer;">
+                                    Hapus
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @empty

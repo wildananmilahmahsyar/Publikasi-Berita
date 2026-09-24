@@ -16,6 +16,15 @@ class PesanKontakController extends Controller
         return view('pages.admin.pesan_kontak', compact('pesanKontaks'));
     }
 
+    public function destroy(PesanKontak $pesanKontak): RedirectResponse
+    {
+        $pesanKontak->delete();
+
+        return redirect()
+            ->route('admin.pesan.index')
+            ->with('success', 'Pesan kontak berhasil dihapus.');
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([

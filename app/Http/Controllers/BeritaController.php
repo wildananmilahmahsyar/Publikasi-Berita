@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Agenda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,6 +21,24 @@ class BeritaController extends Controller
             ->get();
 
         return view('pages.public.home', compact('beritas'));
+    }
+
+    /**
+     * Menampilkan berita kategori Kegiatan pada halaman kegiatan publik.
+     */
+    public function kegiatan()
+    {
+        $kegiatans = Berita::where('category', 'Kegiatan')
+            ->orderBy('tanggal_kegiatan', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $agendas = Agenda::whereDate('tanggal_agenda', '>=', now()->toDateString())
+            ->orderBy('tanggal_agenda')
+            ->orderBy('waktu_agenda')
+            ->get();
+
+        return view('pages.public.kegiatan', compact('kegiatans', 'agendas'));
     }
 
     /**
