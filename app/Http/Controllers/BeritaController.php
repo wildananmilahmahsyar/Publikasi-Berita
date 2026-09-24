@@ -23,6 +23,19 @@ class BeritaController extends Controller
     }
 
     /**
+     * Menampilkan berita kategori Kegiatan pada halaman kegiatan publik.
+     */
+    public function kegiatan()
+    {
+        $kegiatans = Berita::where('category', 'Kegiatan')
+            ->orderBy('tanggal_kegiatan', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('pages.public.kegiatan', compact('kegiatans'));
+    }
+
+    /**
      * Menampilkan detail satu berita kepada pengunjung.
      */
     public function show(Berita $berita)
