@@ -49,9 +49,22 @@
                         </td>
 
                         <td style="text-align: center;">
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">
-                                Detail belum tersedia
-                            </span>
+                            <button
+                                type="button"
+                                class="btn-submit"
+                                style="padding: 6px 12px; font-size: 0.85rem;"
+                                data-name="{{ $pesanKontak->nama }}"
+                                data-email="{{ $pesanKontak->email }}"
+                                data-subject="{{ $pesanKontak->subjek }}"
+                                data-text="{{ $pesanKontak->pesan }}"
+                                onclick="openMessageModal(
+                                    this.dataset.name,
+                                    this.dataset.email,
+                                    this.dataset.subject,
+                                    this.dataset.text
+                                )">
+                                Lihat Pesan
+                            </button>
                         </td>
                     </tr>
                 @empty
