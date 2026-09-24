@@ -114,9 +114,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         |--------------------------------------------------------------------------
         */
 
-        Route::get('/pesan', function () {
-            return view('pages.admin.pesan_kontak');
-        });
+        Route::get('/pesan', [\App\Http\Controllers\PesanKontakController::class, 'index'])
+            ->name('admin.pesan.index');
     });
 
 
