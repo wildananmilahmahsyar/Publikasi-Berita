@@ -116,6 +116,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
         Route::get('/pesan', [\App\Http\Controllers\PesanKontakController::class, 'index'])
             ->name('admin.pesan.index');
+
+        Route::delete('/pesan/{pesanKontak}', [\App\Http\Controllers\PesanKontakController::class, 'destroy'])
+            ->name('admin.pesan.destroy');
     });
 
 
