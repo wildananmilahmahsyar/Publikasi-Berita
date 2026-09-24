@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\PesanKontak;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PesanKontakController extends Controller
 {
+    public function index(): View
+    {
+        $pesanKontaks = PesanKontak::latest()->get();
+
+        return view('pages.admin.pesan_kontak', compact('pesanKontaks'));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
