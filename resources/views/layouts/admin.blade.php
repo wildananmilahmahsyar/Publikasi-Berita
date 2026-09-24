@@ -26,6 +26,7 @@
                 @if(auth()->user()->role === 'sekretaris')
                     <a href="/admin/pengurus">Data Master Pengurus</a>
                     <a href="/admin/arsip">Arsip Surat & Dokumen</a>
+                    <a href="{{ route('admin.agenda.index') }}">Agenda Mendatang</a>
                 @endif
             </nav>
 

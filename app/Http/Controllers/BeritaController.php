@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Berita;
+use App\Models\Agenda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,7 +33,12 @@ class BeritaController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('pages.public.kegiatan', compact('kegiatans'));
+        $agendas = Agenda::whereDate('tanggal_agenda', '>=', now()->toDateString())
+            ->orderBy('tanggal_agenda')
+            ->orderBy('waktu_agenda')
+            ->get();
+
+        return view('pages.public.kegiatan', compact('kegiatans', 'agendas'));
     }
 
     /**
