@@ -13,24 +13,37 @@
 
         <div class="upcoming-events-section">
             <h3 class="sub-title">Agenda Mendatang</h3>
+
             <div class="upcoming-grid">
-                <div class="upcoming-card">
-                    <div class="event-date">15 <span>Jun</span></div>
-                    <div class="event-details">
-                        <h4>Rapat Koordinasi Triwulan</h4>
-                        <p>Divisi Internal • 14.00 WITA • Ruang Sekretariat</p>
+                @forelse ($agendas as $agenda)
+                    <div class="upcoming-card">
+                        <div class="event-date">
+                            {{ $agenda->tanggal_agenda->format('d') }}
+                            <span>{{ $agenda->tanggal_agenda->format('M') }}</span>
+                        </div>
+
+                        <div class="event-details">
+                            <h4>{{ $agenda->judul }}</h4>
+
+                            <p>
+                                {{ $agenda->divisi }}
+                                &bull;
+                                {{ substr($agenda->waktu_agenda, 0, 5) }} WITA
+                                &bull;
+                                {{ $agenda->lokasi }}
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="upcoming-card">
-                    <div class="event-date">22 <span>Jun</span></div>
-                    <div class="event-details">
-                        <h4>Bakhtiar Jurnalistik Award 2026</h4>
-                        <p>Divisi Humas • 09.00 WITA • Aula Kota</p>
+                @empty
+                    <div class="upcoming-card">
+                        <div class="event-details">
+                            <h4>Belum Ada Agenda Mendatang</h4>
+                            <p>Agenda baru akan ditampilkan setelah ditambahkan oleh Sekretaris.</p>
+                        </div>
                     </div>
-                </div>
+                @endforelse
             </div>
         </div>
-
         <div class="filter-kegiatan">
             <span class="filter-label">Saring Divisi:</span>
             <button class="filter-btn active">Semua</button>
