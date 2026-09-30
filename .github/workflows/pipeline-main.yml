@@ -52,7 +52,6 @@ jobs:
 
   testing:
     name: Testing Laravel
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
