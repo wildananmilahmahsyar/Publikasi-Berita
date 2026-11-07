@@ -3,6 +3,53 @@
 @section('title', 'Dokumentasi Kegiatan Organisasi')
 
 @section('content')
+<style>
+    /* CONF-SEQ-1: Memperkecil card kegiatan terlaksana */
+    .kegiatan-section .kegiatan-list-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, 260px);
+        gap: 18px;
+        justify-content: start;
+    }
+
+    .kegiatan-section .kegiatan-item-card {
+        width: 100%;
+        max-width: 260px;
+        overflow: hidden;
+    }
+
+    .kegiatan-section .kegiatan-img {
+        height: 160px;
+    }
+
+    .kegiatan-section .kegiatan-img img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .kegiatan-section .kegiatan-info {
+        padding: 14px;
+    }
+
+    .kegiatan-section .kegiatan-info p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+    }
+
+    @media (max-width: 600px) {
+        .kegiatan-section .kegiatan-list-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .kegiatan-section .kegiatan-item-card {
+            max-width: 100%;
+        }
+    }
+</style>
 <section class="kegiatan-section">
     <div class="kegiatan-container">
         
