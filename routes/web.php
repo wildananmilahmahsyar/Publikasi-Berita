@@ -143,6 +143,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
         Route::get('/arsip', [ArsipController::class, 'index']);
         Route::post('/arsip', [ArsipController::class, 'store']);
+        Route::put('/arsip/{arsip}', [ArsipController::class, 'update'])->name('admin.arsip.update');
+        Route::delete('/arsip/{arsip}', [ArsipController::class, 'destroy'])->name('admin.arsip.destroy');
 
         Route::get('/agenda', [\App\Http\Controllers\AgendaController::class, 'index'])
             ->name('admin.agenda.index');
