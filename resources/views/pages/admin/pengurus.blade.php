@@ -47,10 +47,9 @@
             style="padding: 10px 14px; border: 1px solid var(--border-light); border-radius: 8px; font-size: 0.9rem; background-color: white;"
         >
             <option value="">Urutkan berdasarkan...</option>
-            <option value="nama-asc">Nama A-Z</option>
-            <option value="nama-desc">Nama Z-A</option>
-            <option value="jabatan-asc">Jabatan A-Z</option>
-            <option value="jabatan-desc">Jabatan Z-A</option>
+            <option value="nama-asc">Nama</option>
+            <option value="jabatan-asc">Jabatan</option>
+            <option value="divisi-asc">Divisi</option>
         </select>
     </div>
 
@@ -533,7 +532,7 @@
 
         const [field, direction] = sortValue.split('-');
 
-        const columnIndex = field === 'nama' ? 2 : 3;
+        const columnIndex = { nama: 2, jabatan: 3, divisi: 4 }[field];
 
         rows.sort(function (a, b) {
             const aText = a.children[columnIndex].textContent.trim();
