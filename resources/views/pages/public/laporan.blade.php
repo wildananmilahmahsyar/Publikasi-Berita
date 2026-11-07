@@ -3,6 +3,13 @@
 @section('title', 'Laporan Kegiatan Organisasi')
 
 @section('content')
+<style>
+    /* SEQ-1: Warna header tabel laporan */
+    .laporan-section .report-table thead th {
+        background-color: #1D4ED8;
+        color: #FFFFFF;
+    }
+</style>
 <section class="laporan-section">
     <div class="laporan-container">
         
