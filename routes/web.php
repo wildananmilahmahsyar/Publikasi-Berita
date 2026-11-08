@@ -152,6 +152,18 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/arsip/{arsip}', [ArsipController::class, 'update'])->name('admin.arsip.update');
         Route::delete('/arsip/{arsip}', [ArsipController::class, 'destroy'])->name('admin.arsip.destroy');
 
+        Route::get('/program-kerja', [\App\Http\Controllers\ProgramKerjaController::class, 'index'])
+            ->name('admin.program-kerja.index');
+
+        Route::post('/program-kerja', [\App\Http\Controllers\ProgramKerjaController::class, 'store'])
+            ->name('admin.program-kerja.store');
+
+        Route::put('/program-kerja/{programKerja}', [\App\Http\Controllers\ProgramKerjaController::class, 'update'])
+            ->name('admin.program-kerja.update');
+
+        Route::delete('/program-kerja/{programKerja}', [\App\Http\Controllers\ProgramKerjaController::class, 'destroy'])
+            ->name('admin.program-kerja.destroy');
+
         Route::get('/agenda', [\App\Http\Controllers\AgendaController::class, 'index'])
             ->name('admin.agenda.index');
 
