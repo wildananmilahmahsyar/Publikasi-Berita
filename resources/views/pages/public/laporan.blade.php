@@ -14,7 +14,7 @@
         <div class="report-cards-grid">
             <div class="report-card">
                 <h3>Total Kegiatan Terlaksana</h3>
-                <p class="card-number">38</p>
+                <p class="card-number">{{ \App\Models\Berita::where('category', 'Kegiatan')->count() }}</p>
                 <span class="card-desc">Agenda resmi yang sukses dipublikasikan</span>
             </div>
             <div class="report-card">
