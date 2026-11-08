@@ -21,13 +21,21 @@
         <div class="report-cards-grid">
             <div class="report-card">
                 <h3>Total Kegiatan Terlaksana</h3>
-                <p class="card-number">38</p>
+                <p class="card-number">{{ \App\Models\Berita::where('category', 'Kegiatan')->count() }}</p>
                 <span class="card-desc">Agenda resmi yang sukses dipublikasikan</span>
             </div>
             <div class="report-card">
                 <h3>Ketercapaian Proker</h3>
-                <p class="card-number">85%</p>
-                <span class="card-desc">Dari seluruh target rencana tahunan</span>
+                @php
+                    $jumlahRencanaProker = \App\Models\ProgramKerja::count();
+                    $jumlahBeritaProker = \App\Models\Berita::where('is_proker', true)->count();
+
+                    $rasioProker = $jumlahRencanaProker > 0
+                        ? ($jumlahBeritaProker / $jumlahRencanaProker) * 100
+                        : null;
+                @endphp
+                <p class="card-number">{{ $rasioProker === null ? '-' : number_format($rasioProker, 1, ',', '.') . '%' }}</p>
+                <span class="card-desc">Rasio berita bertanda proker terhadap jumlah rencana proker</span>
             </div>
             <div class="report-card status-success">
                 <h3>Divisi Teraktif</h3>
@@ -48,30 +56,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Divisi Hubungan Masyarakat (Humas)</strong></td>
-                        <td>10</td>
-                        <td>9</td>
-                        <td>15 Berita</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Divisi Internal & Kaderisasi</strong></td>
-                        <td>8</td>
-                        <td>7</td>
-                        <td>12 Berita</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Divisi Minat, Bakat & Olahraga</strong></td>
-                        <td>6</td>
-                        <td>5</td>
-                        <td>8 Berita</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Divisi Dana & Usaha (Danus)</strong></td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>3 Berita</td>
-                    </tr>
+                    @foreach ($rekapDivisi as $baris)
+                        <tr>
+                            <td><strong>{{ $baris['divisi'] }}</strong></td>
+                            <td>{{ $baris['target'] }}</td>
+                            <td>{{ $baris['terlaksana'] }}</td>
+                            <td>{{ $baris['publikasi'] }} Berita</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

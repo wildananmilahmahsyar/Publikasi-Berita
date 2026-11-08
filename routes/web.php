@@ -27,7 +27,60 @@ Route::get('/laporan', function () {
         ->limit(5)
         ->get();
 
-    return view('pages.public.laporan', compact('prokerTerbaru'));
+    // CONF-PAR-2: Rekapitulasi dinamis per divisi.
+    $normalisasiDivisi = static function (?string $nama): string {
+        $asal = trim($nama ?? '');
+        $teks = strtolower($asal);
+
+        return match (true) {
+            str_contains($teks, 'humas') || str_contains($teks, 'hubungan masyarakat') => 'Humas',
+            str_contains($teks, 'kaderisasi') => 'Internal & Kaderisasi',
+            str_contains($teks, 'minat') || str_contains($teks, 'bakat') || str_contains($teks, 'olahraga') => 'Minat, Bakat & Olahraga',
+            str_contains($teks, 'danus') || str_contains($teks, 'dana & usaha') => 'Dana & Usaha (Danus)',
+            default => $asal !== '' ? $asal : 'Belum ditentukan',
+        };
+    };
+
+    $divisiTetap = [
+        'Humas',
+        'Internal & Kaderisasi',
+        'Minat, Bakat & Olahraga',
+        'Dana & Usaha (Danus)',
+    ];
+
+    $rekap = collect($divisiTetap)->mapWithKeys(static fn ($divisi) => [
+        $divisi => [
+            'divisi' => $divisi,
+            'target' => 0,
+            'terlaksana' => 0,
+            'publikasi' => 0,
+        ],
+    ]);
+
+    foreach (\App\Models\ProgramKerja::query()->get(['divisi']) as $rencana) {
+        $key = $normalisasiDivisi($rencana->divisi);
+        $baris = $rekap->get($key, [
+            'divisi' => $key, 'target' => 0, 'terlaksana' => 0, 'publikasi' => 0,
+        ]);
+        $baris['target']++;
+        $rekap->put($key, $baris);
+    }
+
+    foreach (\App\Models\Berita::query()->get(['divisi', 'is_proker']) as $berita) {
+        $key = $normalisasiDivisi($berita->divisi);
+        $baris = $rekap->get($key, [
+            'divisi' => $key, 'target' => 0, 'terlaksana' => 0, 'publikasi' => 0,
+        ]);
+        $baris['publikasi']++;
+        if ($berita->is_proker) {
+            $baris['terlaksana']++;
+        }
+        $rekap->put($key, $baris);
+    }
+
+    $rekapDivisi = $rekap->values();
+
+    return view('pages.public.laporan', compact('prokerTerbaru', 'rekapDivisi'));
 });
 
 Route::get('/kontak', function () {
