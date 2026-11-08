@@ -26,8 +26,16 @@
             </div>
             <div class="report-card">
                 <h3>Ketercapaian Proker</h3>
-                <p class="card-number">85%</p>
-                <span class="card-desc">Dari seluruh target rencana tahunan</span>
+                @php
+                    $jumlahRencanaProker = \App\Models\ProgramKerja::count();
+                    $jumlahBeritaProker = \App\Models\Berita::where('is_proker', true)->count();
+
+                    $rasioProker = $jumlahRencanaProker > 0
+                        ? ($jumlahBeritaProker / $jumlahRencanaProker) * 100
+                        : null;
+                @endphp
+                <p class="card-number">{{ $rasioProker === null ? '-' : number_format($rasioProker, 1, ',', '.') . '%' }}</p>
+                <span class="card-desc">Rasio berita bertanda proker terhadap jumlah rencana proker</span>
             </div>
             <div class="report-card status-success">
                 <h3>Divisi Teraktif</h3>
