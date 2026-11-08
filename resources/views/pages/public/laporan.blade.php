@@ -89,28 +89,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>05-06-2026</td>
-                        <td>Musyawarah Kerja Tahunan Periode 2026</td>
-                        <td>Internal & Kaderisasi</td>
-                        <td>Aula Kampus Utama</td>
-                        <td><span class="branch-tag">Tersedia</span></td>
-                    </tr>
-                    <tr>
-                        <td>28-05-2026</td>
-                        <td>Sesi Berbagi Ilmu: Pengenalan Jurnalistik Dasar</td>
-                        <td>Hubungan Masyarakat</td>
-                        <td>Ruang Pertemuan B.3</td>
-                        <td><span class="branch-tag">Tersedia</span></td>
-                    </tr>
-                    <tr>
-                        <td>14-05-2026</td>
-                        <td>Turnamen Futsal Antar Angkatan Internal</td>
-                        <td>Minat, Bakat & Olahraga</td>
-                        <td>Lapangan GOR Utama</td>
-                        <td><span class="branch-tag">Tersedia</span></td>
-                    </tr>
-                </tbody>
+                    @forelse ($prokerTerbaru as $berita)
+                        <tr>
+                            <td>{{ $berita->tanggal_kegiatan?->format('d-m-Y') ?? '-' }}</td>
+                            <td>{{ $berita->title }}</td>
+                            <td>{{ $berita->divisi ?: '-' }}</td>
+                            <td>{{ $berita->lokasi ?: '-' }}</td>
+                            <td>
+                                <a href="{{ url('/isiberita/' . $berita->id) }}"
+                                   class="branch-tag">
+                                    Lihat Berita
+                                </a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="text-align:center; padding:20px;">
+                                Belum ada berita yang ditandai sebagai program kerja.
+                            </td>
+                        </tr>
+                    @endforelse
+</tbody>
             </table>
         </div>
 
