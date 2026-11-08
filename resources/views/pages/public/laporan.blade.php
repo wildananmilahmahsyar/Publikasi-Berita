@@ -48,30 +48,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><strong>Divisi Hubungan Masyarakat (Humas)</strong></td>
-                        <td>10</td>
-                        <td>9</td>
-                        <td>15 Berita</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Divisi Internal & Kaderisasi</strong></td>
-                        <td>8</td>
-                        <td>7</td>
-                        <td>12 Berita</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Divisi Minat, Bakat & Olahraga</strong></td>
-                        <td>6</td>
-                        <td>5</td>
-                        <td>8 Berita</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Divisi Dana & Usaha (Danus)</strong></td>
-                        <td>4</td>
-                        <td>2</td>
-                        <td>3 Berita</td>
-                    </tr>
+                    @foreach ($rekapDivisi as $baris)
+                        <tr>
+                            <td><strong>{{ $baris['divisi'] }}</strong></td>
+                            <td>{{ $baris['target'] }}</td>
+                            <td>{{ $baris['terlaksana'] }}</td>
+                            <td>{{ $baris['publikasi'] }} Berita</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
