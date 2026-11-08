@@ -118,4 +118,56 @@
 
     </div>
 </section>
+{{-- CONF-SEQ-2: aktifkan filter divisi --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const section = document.querySelector('.kegiatan-section');
+    if (!section) return;
+
+    const buttons = section.querySelectorAll('.filter-kegiatan .filter-btn');
+    const grid = section.querySelector('.kegiatan-list-grid');
+    if (!grid) return;
+
+    const cards = Array.from(grid.querySelectorAll('.kegiatan-item-card'));
+
+    const emptyMessage = document.createElement('p');
+    emptyMessage.textContent = 'Tidak ada kegiatan pada divisi ini.';
+    emptyMessage.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 20px; display: none;';
+    grid.appendChild(emptyMessage);
+
+    buttons.forEach(function (button) {
+        button.type = 'button';
+
+        button.addEventListener('click', function () {
+            const filter = button.textContent.trim().toLowerCase();
+
+            buttons.forEach(function (btn) {
+                btn.classList.toggle('active', btn === button);
+            });
+
+            let visibleCount = 0;
+
+            cards.forEach(function (card) {
+                const divisi = (card.querySelector('.divisi-tag')?.textContent || '')
+                    .trim().toLowerCase();
+
+                const cocok =
+                    filter === 'semua' ||
+                    (filter === 'humas' &&
+                        (divisi.includes('humas') || divisi.includes('hubungan masyarakat'))) ||
+                    (filter === 'kaderisasi' && divisi.includes('kaderisasi')) ||
+                    (filter === 'minat & bakat' &&
+                        (divisi.includes('minat') || divisi.includes('bakat')));
+
+                card.style.display = cocok ? '' : 'none';
+
+                if (cocok) visibleCount++;
+            });
+
+            emptyMessage.style.display =
+                visibleCount === 0 && cards.length > 0 ? 'block' : 'none';
+        });
+    });
+});
+</script>
 @endsection
