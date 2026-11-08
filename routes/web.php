@@ -21,7 +21,13 @@ Route::get('/kegiatan', [BeritaController::class, 'kegiatan'])
     ->name('kegiatan');
 
 Route::get('/laporan', function () {
-    return view('pages.public.laporan');
+    $prokerTerbaru = \App\Models\Berita::where('is_proker', true)
+        ->orderByDesc('tanggal_kegiatan')
+        ->orderByDesc('id')
+        ->limit(5)
+        ->get();
+
+    return view('pages.public.laporan', compact('prokerTerbaru'));
 });
 
 Route::get('/kontak', function () {
